@@ -281,23 +281,49 @@ function pluginprefix_setup_db(){
     set_time_limit(-1);
     global $wpdb;
     try{
-        $ptbd_table_name = $wpdb->prefix . 'revisions_postmeta';
+        if(!function_exists('dbDelta')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        }
+        $ptbd_table_name = $wpdb->prefix . 'woo_rank';
         if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
 
             $sql  = 'CREATE TABLE '.$ptbd_table_name.'(
-            meta_id BIGINT AUTO_INCREMENT,
-            revisions_post_id BIGINT NOT NULL,
-                     meta_key VARCHAR(255) NULL ,
-                     meta_value LONGTEXT NULL,
-                    PRIMARY KEY(meta_id))';
-
-            if(!function_exists('dbDelta')) {
-                require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            }
-
+            id INT AUTO_INCREMENT,
+            imageurl VARCHAR(255)  NULL,
+            name VARCHAR(255) NOT NULL ,
+            minimum_spending INT NOT NULL,
+            price_sale_off INT NOT NULL,
+            is_limit INT DEFAULT 0,
+            price_sale_off_max INT NOT NULL,
+                    PRIMARY KEY(id))';
             dbDelta($sql);
-            update_option('tables_created', true);
-        }else{
+        }
+
+        $ptbd_table_name = $wpdb->prefix . 'woo_setting';
+        if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
+
+            $sql  = 'CREATE TABLE '.$ptbd_table_name.'(
+            id INT AUTO_INCREMENT,
+            amount_spent INT NOT NULL,
+            points_converted_to_money INT NOT NULL,
+                    PRIMARY KEY(id))';
+            dbDelta($sql);
+        }
+
+        $ptbd_table_name = $wpdb->prefix . 'woo_history_user_point';
+        if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
+
+            $sql  = 'CREATE TABLE '.$ptbd_table_name.'(
+            id INT AUTO_INCREMENT,
+            user_id INT NOT NULL,
+            total_order INT NOT NULL,
+            order_id INT NOT NULL,
+            point INT NOT NULL,
+            minimum_spending INT NOT NULL,
+            price_sale_off INT NOT NULL,
+            price_sale_off_max INT NOT NULL,
+                    PRIMARY KEY(id))';
+            dbDelta($sql);
         }
     } catch (\Exception $ex) {
     }
