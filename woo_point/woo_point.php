@@ -31,10 +31,15 @@ class Paulund_Wp_List_Table
         $this->plugin_url = plugin_dir_url( dirname( __FILE__ ) ).'woo_point';
         add_action( 'admin_menu', array($this, 'themeslug_enqueue_style') );
         add_action( 'admin_menu', array($this, 'add_menu_example_list_table_page' ));
+        add_action('admin_enqueue_scripts', array($this, 'load_media_files'));
     }
     function themeslug_enqueue_style() {
         wp_enqueue_style( 'add_point_style', $this->plugin_url . '/assets/styles/styles.css' );
         wp_enqueue_script( 'add_point_script', $this->plugin_url . '/assets/scripts/scripts.js' );
+    }
+
+    function load_media_files() {
+        wp_enqueue_media();
     }
     
     /**
