@@ -317,11 +317,12 @@ function pluginprefix_setup_db(){
             id INT AUTO_INCREMENT,
             user_id INT NOT NULL,
             total_order INT NOT NULL,
-            order_id INT NOT NULL,
+            order_id INT NULL,
             point INT NOT NULL,
-            minimum_spending INT NOT NULL,
-            price_sale_off INT NOT NULL,
-            price_sale_off_max INT NOT NULL,
+            minimum_spending INT  NULL,
+            price_sale_off INT  NULL,
+            price_sale_off_max INT  NULL,
+            status INT DEFAULT 1,
                     PRIMARY KEY(id))';
             dbDelta($sql);
         }
