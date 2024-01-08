@@ -322,8 +322,9 @@ function pluginprefix_setup_db(){
             minimum_spending INT  NULL,
             price_sale_off INT  NULL,
             price_sale_off_max INT  NULL,
-            status INT DEFAULT 1,
+            status INT DEFAULT 1, 
                     PRIMARY KEY(id))';
+                    //status =1 (them) =2  (tru)
             dbDelta($sql);
         }
     } catch (\Exception $ex) {
