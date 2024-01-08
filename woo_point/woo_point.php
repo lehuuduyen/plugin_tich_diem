@@ -323,6 +323,8 @@ function pluginprefix_setup_db(){
             price_sale_off INT  NULL,
             price_sale_off_max INT  NULL,
             status INT DEFAULT 1, 
+            create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  ,
+
                     PRIMARY KEY(id))';
                     //status =1 (them) =2  (tru)
             dbDelta($sql);
