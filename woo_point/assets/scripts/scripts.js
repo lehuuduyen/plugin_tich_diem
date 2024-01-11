@@ -1,18 +1,34 @@
 const hiddenClass = 'd-none';
 let isEditAll = false;
 let step = 1;
+let stepEditAll = 1;
 let ids = [];
+let triggerEditAll = 0;
+
+function handleConverMoney(e) {
+  const span = document.getElementById('points_converted_to_money_span');
+  span.innerHTML = e.value;
+
+  const spanEditAll = document.getElementById('points_converted_to_money_span_edit_all');
+  spanEditAll.innerHTML = e.value;
+}
+
+function handleAmountSpent(e) {
+  const span = document.getElementById('amount_spent_span');
+  span.innerHTML = e.value;
+
+  const spanEditAll = document.getElementById('amount_spent_span_edit_all');
+  spanEditAll.innerHTML = e.value;
+}
 
 function showEditAll() {
-  document.getElementById('button-edit-all').style.cssText = 'display: flex';
-  document.getElementById('modal-add-btn').style.cssText = 'display: flex';
-  document.getElementById('modal-add-user-btn').style.cssText = 'display: none';
+  document.getElementById('button-open-modal-edit-all').style.cssText = 'display: flex';
+  document.getElementById('button-open-modal-add').style.cssText = 'display: flex';
 }
 
 function hideEditAll() {
-  document.getElementById('button-edit-all').style.cssText = 'display: none !important';
-  document.getElementById('modal-add-btn').style.cssText = 'display: none !important';
-  document.getElementById('modal-add-user-btn').style.cssText = 'display: flex';
+  document.getElementById('button-open-modal-edit-all').style.cssText = 'display: none !important';
+  document.getElementById('button-open-modal-add').style.cssText = 'display: none !important';
 }
 
 function showModal(id) {
@@ -28,6 +44,14 @@ function hideModal(id) {
   modalOverlay.classList.add(hiddenClass);
   modal.classList.add(hiddenClass);
   step = 1;
+}
+
+function hideModalAll(id) {
+  const modalOverlay = document.getElementById('overlay');
+  const modal = document.getElementById(id);
+  modalOverlay.classList.add(hiddenClass);
+  modal.classList.add(hiddenClass);
+  stepEditAll = 1;
 }
 
 function changeModalContentEdit() {
@@ -48,7 +72,7 @@ function changeModalContentEdit() {
 function changeModalContentEditAll() {
   for (let i = 1; i <= 4; i++) {
     const contentStep = document.getElementsByClassName(`content-step-${i}-edit-all`);
-    if (i === step) {
+    if (i === stepEditAll) {
       for (let j = 0; j < contentStep.length; j++) {
         contentStep[j].classList.remove(hiddenClass);
       }
@@ -115,6 +139,7 @@ function handleInputChange(modal) {
 }
 
 function openEditModal(id) {
+  isEditAll = false;
   step = isEditAll ? 1 : 2;
   const modalOverlay = document.getElementById('overlay');
   const modal = document.getElementById(`modal-edit-ranking-${id}`);
@@ -257,9 +282,9 @@ function openEditModal(id) {
 }
 
 function openEditAllModal() {
+  triggerEditAll++;
   isEditAll = true;
-  step = isEditAll ? 1 : 2;
-  console.log('step', step);
+  stepEditAll = 1;
   const modalOverlay = document.getElementById('overlay');
   const modalEditAll = document.getElementById(`modal-edit-all-ranking`);
   const modalNextStep1 = document.getElementById(`modal-next-edit-step-1-all`);
@@ -267,7 +292,6 @@ function openEditAllModal() {
   const modalNextStep3 = document.getElementById(`modal-next-edit-step-3-all`);
   const modalPrevEditAll = document.getElementById(`modal-prev-edit-all`);
   const modalUpdate = document.getElementById(`modal-update-edit-all`);
-  const uploadImageBtn = document.getElementsByClassName(`upload-image-button-edit-all`);
   modalOverlay.classList.remove(hiddenClass);
   modalEditAll.classList.remove(hiddenClass);
   modalPrevEditAll.classList.add(hiddenClass);
@@ -280,18 +304,17 @@ function openEditAllModal() {
     document.getElementById(`step-${i}-edit-all`).classList.remove('active');
   }
 
-  document.getElementById(`step-${step}-edit-all`).classList.add('current');
+  document.getElementById(`step-${stepEditAll}-edit-all`).classList.add('current');
 
-  for (let i = step - 1; i > 0; i--) {
+  for (let i = stepEditAll - 1; i > 0; i--) {
     document.getElementById(`step-${i}-edit-all`).classList.add('active');
   }
 
   changeModalContentEditAll();
 
-  modalNextStep1.addEventListener('click', function() {
-    console.log('slkdslkfdf');
+  triggerEditAll <= 1 && modalNextStep1.addEventListener('click', function() {
     let checkPassStep1 = 0;
-    if (step === 1) {
+    if (stepEditAll === 1) {
       const contentStep1 = document.querySelector('.content-step-1-edit-all');
       const requireInputStep1 = contentStep1.querySelectorAll('.require-field');
 
@@ -310,9 +333,9 @@ function openEditAllModal() {
     }
   });
 
-  modalNextStep2.addEventListener('click', function() {
+  triggerEditAll <= 1 && modalNextStep2.addEventListener('click', function() {
     let checkPassStep2 = 0;
-    if (step === 2) {
+    if (stepEditAll === 2) {
       const contentStep2 = document.querySelector('.content-step-2-edit-all');
       const requireInputStep2 = contentStep2.querySelectorAll('.require-field');
 
@@ -331,9 +354,9 @@ function openEditAllModal() {
     }
   });
 
-  modalNextStep3.addEventListener('click', function() {
+  triggerEditAll <= 1 && modalNextStep3.addEventListener('click', function() {
     let checkPassStep3 = 0;
-    if (step === 3) {
+    if (stepEditAll === 3) {
       const contentStep3 = document.querySelector('.content-step-3-edit-all');
       const requireInputStep3 = contentStep3.querySelectorAll('.require-field');
       const limitInput = contentStep3.querySelector('.is-limit-input');
@@ -354,49 +377,49 @@ function openEditAllModal() {
   });
 
   function nextStep() {
-    step++;
+    stepEditAll++;
     changeModalContentEditAll();
     modalPrevEditAll.classList.remove(hiddenClass);
-    document.getElementById(`step-${step}-edit-all`).classList.add('current');
+    document.getElementById(`step-${stepEditAll}-edit-all`).classList.add('current');
 
-    for (let i = step - 1; i > 0; i--) {
+    for (let i = stepEditAll - 1; i > 0; i--) {
       document.getElementById(`step-${i}-edit-all`).classList.add('active');
     }
 
-    if (step === 2) {
+    if (stepEditAll === 2) {
       modalNextStep1.classList.add(hiddenClass);
       modalNextStep2.classList.remove(hiddenClass);
     }
 
-    if (step === 3) {
+    if (stepEditAll === 3) {
       modalNextStep2.classList.add(hiddenClass);
       modalNextStep3.classList.remove(hiddenClass);
     }
 
-    if (step === 4) {
+    if (stepEditAll === 4) {
       modalNextStep2.classList.add(hiddenClass);
       modalNextStep3.classList.add(hiddenClass);
       modalUpdate.classList.remove(hiddenClass);
     }
   }
 
-  modalPrevEditAll.addEventListener('click', function() {
-    document.getElementById(`step-${step}-edit-all`).classList.remove('current');
-    step--;
-    document.getElementById(`step-${step}-edit-all`).classList.remove('active');
+  triggerEditAll <= 1 && modalPrevEditAll.addEventListener('click', function() {
+    document.getElementById(`step-${stepEditAll}-edit-all`).classList.remove('current');
+    stepEditAll--;
+    document.getElementById(`step-${stepEditAll}-edit-all`).classList.remove('active');
 
-    if (step === 1 || (step === 2 && isEditAll === false)) {
+    if (stepEditAll === 1 || (stepEditAll === 2 && isEditAll === false)) {
       modalPrevEditAll.classList.add(hiddenClass);
       modalNextStep1.classList.remove(hiddenClass);
       modalNextStep2.classList.add(hiddenClass);
     }
 
-    if (step === 2) {
+    if (stepEditAll === 2) {
       modalNextStep2.classList.remove(hiddenClass);
       modalNextStep3.classList.add(hiddenClass);
     }
 
-    if (step === 3) {
+    if (stepEditAll === 3) {
       modalNextStep3.classList.remove(hiddenClass);
       modalUpdate.classList.add(hiddenClass);
     }
@@ -432,26 +455,27 @@ function openEditAllModal() {
   handleInputChange(modalEditAll);
 
   const deleteEditRecord = document.querySelectorAll('.delete-edit-record');
+  const numberOfRanking = document.getElementsByName('number_of_ranking')[0].value;
 
-    if (recordLength > 1) {
-      deleteEditRecord.forEach((item) => {
-        item.removeAttribute('disabled');
-      });
-    }
-
+  if (numberOfRanking > 1) {
     deleteEditRecord.forEach((item) => {
-      item.addEventListener('click', function() {
-        const currentId = item.parentElement.parentElement.id.split('-')[4];
-        item.parentElement.parentElement.remove();
-        document.querySelector(`#record-step-3-add-${currentId}`).remove();
-        document.querySelector(`#record-step-4-add-${currentId}`).remove();
-
-        const deleteEditRecordCheck = document.querySelectorAll('.delete-edit-record');
-        if (deleteEditRecordCheck.length === 1) {
-          deleteEditRecordCheck[0].setAttribute('disabled', '');
-        }
-      });
+      item.removeAttribute('disabled');
     });
+  }
+
+  deleteEditRecord.forEach((item) => {
+    item.addEventListener('click', function() {
+      const currentId = item.parentElement.parentElement.id.split('-')[5];
+      item.parentElement.parentElement.remove();
+      document.querySelector(`#record-step-3-edit-all-${currentId}`).remove();
+      document.querySelector(`#record-step-4-edit-all-${currentId}`).remove();
+
+      const deleteEditRecordCheck = document.querySelectorAll('.delete-edit-record');
+      if (deleteEditRecordCheck.length === 1) {
+        deleteEditRecordCheck[0].setAttribute('disabled', '');
+      }
+    });
+  });
 }
 
 window.addEventListener('load', function() {
@@ -484,7 +508,7 @@ window.addEventListener('load', function() {
   let listIdsDelete = [];
   let recordLength = 1;
   const modalOverlay = document.getElementById('overlay');
-  const modalAddBtn = document.getElementById('modal-add-btn');
+  const modalAddBtn = document.getElementById('button-open-modal-add');
   const modalDeleteBtn = document.getElementById('modal-delete-btn');
   const modalAdd = document.getElementById('modal-add');
   const modalClose = document.getElementById('modal-close');
@@ -502,11 +526,8 @@ window.addEventListener('load', function() {
   const tableStep3 = document.getElementById('table-step-3');
   const tableStep4 = document.getElementById('table-step-4');
 
-  document.getElementById('modal-add-user-btn').style.cssText = 'display: none';
-
   addMoreRecord.addEventListener('click', function() {
     recordLength++;
-
     const rowStep2 = document.createElement('tr');
     rowStep2.innerHTML = `
       <td class="flex-center">
@@ -597,8 +618,10 @@ window.addEventListener('load', function() {
       item.addEventListener('click', function() {
         const currentId = item.parentElement.parentElement.id.split('-')[4];
         item.parentElement.parentElement.remove();
-        document.querySelector(`#record-step-3-add-${currentId}`).remove();
-        document.querySelector(`#record-step-4-add-${currentId}`).remove();
+        const step3Delete = document.querySelector(`#record-step-3-add-${currentId}`);
+        const step4Delete = document.querySelector(`#record-step-4-add-${currentId}`);
+        step3Delete && step3Delete.remove();
+        step4Delete && step4Delete.remove();
 
         const deleteAddRecordCheck = document.querySelectorAll('.delete-add-record');
         if (deleteAddRecordCheck.length === 1) {

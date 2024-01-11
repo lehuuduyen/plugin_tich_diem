@@ -101,15 +101,11 @@
     </div>
   <?php } ?>
   <div class="actions">
-    <button id="modal-add-btn" class="button">
+    <button id="button-open-modal-add" class="button">
       <span class="dashicons dashicons-plus-alt2"></span>
       <span>Thêm</span>
     </button>
-    <button id="modal-add-user-btn" class="button">
-      <span class="dashicons dashicons-plus-alt2"></span>
-      <span>Thêm</span>
-    </button>
-    <button id="button-edit-all" onclick="openEditAllModal()" class="button">
+    <button id="button-open-modal-edit-all" onclick="openEditAllModal()" class="button">
       <span class="dashicons dashicons-edit-page"></span>
       <span>Chỉnh sửa tất cả</span>
     </button>

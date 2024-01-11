@@ -196,8 +196,8 @@
       </div>
       <div class="modal-actions">
         <button type="button" id="modal-prev" class="button">Quay lại</button>
-        <button type="button" id="modal-next-step-2" class="button button-primary">Tiếp theo (step 2)</button>
-        <button type="button" id="modal-next-step-3" class="button button-primary">Tiếp theo (step 3)</button>
+        <button type="button" id="modal-next-step-2" class="button button-primary">Tiếp theo</button>
+        <button type="button" id="modal-next-step-3" class="button button-primary">Tiếp theo</button>
         <button type="submit" id="modal-update" class="button button-primary" name="addRanking">Tạo</button>
       </div>
     </form>

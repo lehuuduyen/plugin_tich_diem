@@ -1,6 +1,7 @@
 <?php
   $table = $wpdb->prefix . 'users';
-  $users = $wpdb->get_results( 'SELECT * FROM ' . $table . ' ORDER BY id ASC', ARRAY_A );
+  $tableHistory = $wpdb->prefix . 'woo_history_user_point';
+  $users = $wpdb->get_results( 'SELECT ID, display_name FROM ' . $table . ' ORDER BY id ASC', ARRAY_A );
   $currentPage = ! empty( $_GET['paged'] ) ? (int) $_GET['paged'] : 1;
   $total = count( $users );
   $perPage = 10;
@@ -10,6 +11,29 @@
   $offset = ($currentPage - 1) * $perPage;
   if ($offset < 0) $offset = 0;
   $users = array_slice($users, $offset, $perPage);
+  $history = $wpdb->get_results( 'SELECT * FROM ' . $tableHistory . ' ORDER BY id ASC', ARRAY_A);
+
+  $listHistory = [];
+  foreach ($users as $key1 => $user) {
+    foreach ($history as $key2 => $his) {
+      if ($user['ID'] === $his['user_id']) {
+        array_push($listHistory, array('id' => $his['user_id'], 'status' => $his['status'], 'point' => $his['point']));
+      }
+    }
+  }
+
+  echo '<pre>';
+    print_r($listHistory);
+  echo '</pre>';
+
+  $result = array();
+  foreach ($listHistory as $element) {
+    $result[$element['id']][] = $element;
+  }
+
+  echo '<pre>';
+    print_r($result);
+  echo '</pre>';
 ?>
 
 <table class="wp-list-table widefat fixed striped table-view-list users">
@@ -24,8 +48,8 @@
     <?php foreach ( $users as $key => $value ) { ?>
       <tr>
         <td><?php echo $value['display_name'] ?></td>
-        <td></td>
-        <td></td>
+        <td>Chưa có xếp hạng</td>
+        <td>0đ</td>
       </tr>
     <?php } ?>
   </tbody>

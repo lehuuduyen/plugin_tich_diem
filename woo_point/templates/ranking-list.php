@@ -254,8 +254,8 @@
           <div class="step-content content-step-4-edit">
             <div class="step-content-header">
               <h2>Hãy kiểm tra lại thông tin trước khi bấm tạo nhé!</h2>
-              <p>Quy tắc tích điểm: <b>Chi tiêu 10,000đ = 1 Điểm</b></p>
-              <p>Quy tắc đổi điểm: <b>1 điểm = 3,000đ</b></p>
+              <p>Quy tắc tích điểm: <b>Chi tiêu <?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?>đ = 1 Điểm</b></p>
+              <p>Quy tắc đổi điểm: <b>1 điểm = <?php echo count($settings) > 0 ? $settings[0]['amount_spent'] : ''; ?>đ</b></p>
             </div>
             <hr />
             <div class="step-content-content" style="overflow-x:auto;">
@@ -295,8 +295,8 @@
         <input type="text" name="rankId" hidden value="<?php echo $value['id']; ?>" />
         <div class="modal-actions">
           <button type="button" id="modal-prev-edit-<?php echo $value['id']; ?>" class="button">Quay lại</button>
-          <button type="button" id="modal-next-edit-step-2-<?php echo $value['id']; ?>" class="button button-primary">Tiếp theo (step 2)</button>
-          <button type="button" id="modal-next-edit-step-3-<?php echo $value['id']; ?>" class="button button-primary">Tiếp theo (step 3)</button>
+          <button type="button" id="modal-next-edit-step-2-<?php echo $value['id']; ?>" class="button button-primary">Tiếp theo</button>
+          <button type="button" id="modal-next-edit-step-3-<?php echo $value['id']; ?>" class="button button-primary">Tiếp theo</button>
           <button type="submit" id="modal-update-edit-<?php echo $value['id']; ?>" class="button button-primary" name="editRanking">Cập nhật</button>
         </div>
       </form>
@@ -305,7 +305,7 @@
 <?php } ?>
 <div id="modal-edit-all-ranking" class="modal d-none">
   <div class="modal-wrapper">
-    <p onclick="hideModal('modal-edit-all-ranking')" class="close">✕</p>
+    <p onclick="hideModalAll('modal-edit-all-ranking')" class="close">✕</p>
     <div class="modal-header">
       <p>Chỉnh sửa tất cả xếp hạng</p>
     </div>
@@ -345,7 +345,7 @@
               <div class="group-input" style="display: flex; gap: 15px;">
                 <div>
                   <p class="required">Số tiền chi tiêu quy đổi ra 1 điểm</p>
-                  <input type="text" class="require-field" name="points_converted_to_money" value="<?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?>">
+                  <input type="number" class="require-field" onkeyup="handleConverMoney(this)" name="points_converted_to_money" value="<?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?>">
                   <p class="form-error-text d-none">Đây là trường bắt buộc</p>
                 </div>
                 <div>
@@ -353,6 +353,7 @@
                   <span>=</span>&nbsp;<input disabled type="text" value="1">
                 </div>
               </div>
+              <p>Khách hàng sẻ nhận được 1 điểm với mỗi <span id="points_converted_to_money_span"><?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?></span>đ Chi tiêu</p>
             </div>
             <div>
               <h4>Tỉ lệ tích điểm theo chỉ tiêu</h4>
@@ -363,13 +364,15 @@
                 </div>
                 <div>
                   <p class="required">Điểm quy đổi ra tiền</p>
-                  <span>=</span>&nbsp;<input type="text" class="require-field" name="amount_spent" value="<?php echo count($settings) > 0 ? $settings[0]['amount_spent'] : ''; ?>">
+                  <span>=</span>&nbsp;<input type="number" class="require-field" onkeyup="handleAmountSpent(this)" name="amount_spent" value="<?php echo count($settings) > 0 ? $settings[0]['amount_spent'] : ''; ?>">
                   <p class="form-error-text d-none">Đây là trường bắt buộc</p>
                 </div>
               </div>
+              <p>Khách hàng sẻ đổi được 1 điểm thành <span id="amount_spent_span"><?php echo count($settings) > 0 ? $settings[0]['amount_spent'] : ''; ?></span>đ khi thanh toán</p>
             </div>
           </div>
         </div>
+        <input hidden name="number_of_ranking" value="<?php echo count($ranks); ?>" />
         <div class="step-content content-step-2-edit-all d-none">
           <div class="step-content-header">
             <h2>Thiết lập xếp hạng thành viên</h2>
@@ -388,7 +391,7 @@
               </thead>
               <tbody>
                 <?php foreach ($ranks as $key => $value) { ?>
-                  <tr>
+                  <tr id="record-step-2-edit-all-<?php echo $value['id']; ?>">
                     <td class="flex-center">
                       <button type="button" class="upload-image-button-edit-all button flex-center">
                         <span class="dashicons dashicons-admin-media"></span>
@@ -440,7 +443,7 @@
               </thead>
               <tbody>
                 <?php foreach ($ranks as $key => $value) { ?>
-                  <tr>
+                  <tr id="record-step-3-edit-all-<?php echo $value['id']; ?>">
                     <td>
                       <span class="dashicons dashicons-plus-alt"></span>
                       <span class="show-rank"><?php echo $value['name']; ?></span>
@@ -476,8 +479,8 @@
         <div class="step-content content-step-4-edit-all d-none">
           <div class="step-content-header">
             <h2>Hãy kiểm tra lại thông tin trước khi bấm tạo nhé!</h2>
-            <p>Quy tắc tích điểm: <b>Chi tiêu 10,000đ = 1 Điểm</b></p>
-            <p>Quy tắc đổi điểm: <b>1 điểm = 3,000đ</b></p>
+            <p>Quy tắc tích điểm: <b>Chi tiêu <span id="points_converted_to_money_span_edit_all"><?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?></span>đ = 1 Điểm</b></p>
+            <p>Quy tắc đổi điểm: <b>1 điểm = <span id="amount_spent_span_edit_all"><?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?></span>đ</b></p>
           </div>
           <hr />
           <div class="step-content-content" style="overflow-x:auto;">
@@ -492,7 +495,7 @@
               </thead>
               <tbody>
                 <?php foreach ($ranks as $key => $value) { ?>
-                  <tr>
+                  <tr id="record-step-4-edit-all-<?php echo $value['id']; ?>">
                     <td>
                       <span class="dashicons dashicons-plus-alt"></span>
                       <span class="show-rank-final"><?php echo $value['name']; ?></span>
@@ -521,9 +524,9 @@
       <?php } ?>
       <div class="modal-actions">
         <button type="button" id="modal-prev-edit-all" class="button">Quay lại</button>
-        <button type="button" id="modal-next-edit-step-1-all" class="button button-primary">Tiếp theo (step 1)</button>
-        <button type="button" id="modal-next-edit-step-2-all" class="button button-primary">Tiếp theo (step 2)</button>
-        <button type="button" id="modal-next-edit-step-3-all" class="button button-primary">Tiếp theo (step 3)</button>
+        <button type="button" id="modal-next-edit-step-1-all" class="button button-primary">Tiếp theo</button>
+        <button type="button" id="modal-next-edit-step-2-all" class="button button-primary">Tiếp theo</button>
+        <button type="button" id="modal-next-edit-step-3-all" class="button button-primary">Tiếp theo</button>
         <button type="submit" id="modal-update-edit-all" class="button button-primary" name="editAllRanking">Cập nhật</button>
       </div>
     </form>
