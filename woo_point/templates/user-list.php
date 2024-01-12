@@ -52,12 +52,11 @@
     foreach ($value as $key2 => $val2) {
       if ($val2['status'] == $status['PURCHASE']) {
         $spendingPoint += $val2['point'];
+        $pointRank += $val2['total_order'];
       }
       if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
         $spendingPoint -= $val2['point'];
       }
-
-      $pointRank += $val2['total_order'];
     }
     $finalResult[$key]['spending_point'] = $spendingPoint;
     $finalResult[$key]['point_rank'] = $pointRank;
