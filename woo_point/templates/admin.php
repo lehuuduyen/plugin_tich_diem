@@ -118,10 +118,10 @@
   </div>
   <form method="post">
     <ul class="nav-tabs">
-      <li onclick="showEditAll()" class="active">
+      <li id="tabRank" onclick="showEditAll()">
         <a href="#tab-1">Danh sách xếp hạng</a>
       </li>
-      <li onclick="hideEditAll()">
+      <li id="tabUser" onclick="hideEditAll()">
         <a href="#tab-2">Danh sách thành viên</a>
       </li>
     </ul>

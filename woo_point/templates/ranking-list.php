@@ -3,9 +3,10 @@
   $tableSetting = $wpdb->prefix . 'woo_setting';
   $ranks = $wpdb->get_results( 'SELECT * FROM ' . $table . ' ORDER BY id ASC', ARRAY_A );
   $settings = $wpdb->get_results( 'SELECT * FROM ' . $tableSetting . ' ORDER BY id ASC', ARRAY_A );
-  $currentPage = ! empty( $_GET['paged'] ) ? (int) $_GET['paged'] : 1;
+
+  $currentPage = (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'dsxh') ? (int) $_GET['paged'] : 1;
   $total = count( $ranks );
-  $perPage = 10;
+  $perPage = 2;
   $totalPages = ceil($total/ $perPage);
   $currentPage = max($currentPage, 1);
   $currentPage = min($currentPage, $totalPages);
@@ -49,20 +50,20 @@
 </table>
 <ul class="pagination">
   <?php
-    if ( !empty( $_GET['paged'] ) ) $pg = $_GET['paged'];
+    if ( (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'dsxh') ) $pg = $_GET['paged'];
 
     if ( isset( $pg ) && $pg > 1 ) {
-      echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . ( $pg - 1 ) . '">«</a></li>';
+      echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . ( $pg - 1 ) . '&tab=dsxh">«</a></li>';
     }
 
     for ( $i = 1; $i <= $totalPages; $i++ ) {
       if ( isset( $pg ) && $pg == $i )  $active = 'active';
       else $active = '';
-      echo '<li><a href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . $i . '" class="button ' . $active . '">' . $i . '</a></li>';
+      echo '<li><a href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . $i . '&tab=dsxh" class="button ' . $active . '">' . $i . '</a></li>';
     }
 
     if ( isset( $pg ) && $pg < $totalPages ) {
-      echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . ( $pg + 1 ). '">»</a></li>';
+      echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=tich-diem&paged=' . ( $pg + 1 ). '&tab=dsxh">»</a></li>';
     }
   ?>
 </ul>

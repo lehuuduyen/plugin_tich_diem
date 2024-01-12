@@ -486,6 +486,32 @@ window.addEventListener('load', function() {
   });
 
   /* Tabs */
+  sPageURL = window.location.search.substring(1);
+  const params = sPageURL.split('&');
+  
+  const tabRank = document.getElementById('tabRank');
+  const tabUser = document.getElementById('tabUser');
+
+  if (params.length === 1) {
+    tabRank.classList.add('active');
+    tabUser.classList.remove('active');
+
+    document.getElementById('tab-1').classList.add('active');
+    document.getElementById('tab-2').classList.remove('active');
+  } else if (params[2].split('=')[1] === 'dsxh') {
+    tabRank.classList.add('active');
+    tabUser.classList.remove('active');
+
+    document.getElementById('tab-1').classList.add('active');
+    document.getElementById('tab-2').classList.remove('active');
+  } else if (params[2].split('=')[1] === 'dstv') {
+    tabRank.classList.remove('active');
+    tabUser.classList.add('active');
+
+    document.getElementById('tab-1').classList.remove('active');
+    document.getElementById('tab-2').classList.add('active');
+  }
+
   const tabs = document.querySelectorAll('ul.nav-tabs > li');
   for (i = 0; i < tabs.length; i++) {
     tabs[i].addEventListener('click', switchTab);
