@@ -116,7 +116,7 @@ function pluginprefix_setup_db(){
 
             $sql  = 'CREATE TABLE '.$ptbd_table_name.'(
             id BIGINT AUTO_INCREMENT,
-            user_id INT NOT NULL,
+            user_id BIGINT NOT NULL,
             total_order INT NOT NULL,
             order_id INT NULL,
             point INT NOT NULL,
