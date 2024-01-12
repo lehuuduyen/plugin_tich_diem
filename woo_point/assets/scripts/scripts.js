@@ -5,7 +5,7 @@ let stepEditAll = 1;
 let ids = [];
 let triggerEditAll = 0;
 
-function handleConverMoney(e) {
+function handleConvertMoney(e) {
   const span = document.getElementById('points_converted_to_money_span');
   span.innerHTML = e.value;
 
@@ -296,6 +296,7 @@ function openEditAllModal() {
   modalEditAll.classList.remove(hiddenClass);
   modalPrevEditAll.classList.add(hiddenClass);
   modalUpdate.classList.add(hiddenClass);
+  modalNextStep1.classList.remove(hiddenClass);
   modalNextStep2.classList.add(hiddenClass);
   modalNextStep3.classList.add(hiddenClass);
 

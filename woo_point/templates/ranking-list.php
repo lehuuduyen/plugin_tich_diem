@@ -346,7 +346,7 @@
               <div class="group-input" style="display: flex; gap: 15px;">
                 <div>
                   <p class="required">Số tiền chi tiêu quy đổi ra 1 điểm</p>
-                  <input type="number" class="require-field" onkeyup="handleConverMoney(this)" name="points_converted_to_money" value="<?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?>">
+                  <input type="number" class="require-field" onkeyup="handleConvertMoney(this)" name="points_converted_to_money" value="<?php echo count($settings) > 0 ? $settings[0]['points_converted_to_money'] : ''; ?>">
                   <p class="form-error-text d-none">Đây là trường bắt buộc</p>
                 </div>
                 <div>
