@@ -91,7 +91,7 @@ function pluginprefix_setup_db(){
             $sql  = 'CREATE TABLE '.$ptbd_table_name.'(
             id INT AUTO_INCREMENT,
             imageurl VARCHAR(255)  NULL,
-            name VARCHAR(255) NOT NULL ,
+            name VARCHAR(255) CHARACTER SET utf8mb4  NOT NULL,
             minimum_spending INT NOT NULL,
             price_sale_off INT NOT NULL,
             is_limit INT DEFAULT 0,
