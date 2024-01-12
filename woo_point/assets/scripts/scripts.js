@@ -27,11 +27,13 @@ function showEditAll() {
   document.getElementById('button-open-modal-edit-all').classList.remove(hiddenClass);
   document.getElementById('button-open-modal-add').style.cssText = 'display: flex';
   document.getElementById('button-open-modal-add').classList.remove(hiddenClass);
+  document.getElementById('modal-delete-btn').classList.remove(hiddenClass);
 }
 
 function hideEditAll() {
   document.getElementById('button-open-modal-edit-all').style.cssText = 'display: none !important';
   document.getElementById('button-open-modal-add').style.cssText = 'display: none !important';
+  document.getElementById('modal-delete-btn').classList.add(hiddenClass);
 }
 
 function showModal(id) {
