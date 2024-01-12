@@ -442,7 +442,7 @@
                   <th>Số tiền khuyến mãi tối đa cho một đơn hàng</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="table-step-3-edit">
                 <?php foreach ($ranks as $key => $value) { ?>
                   <tr id="record-step-3-edit-all-<?php echo $value['id']; ?>">
                     <td>
@@ -462,7 +462,7 @@
                       <div class="is-limit-content <?php echo ($value['is_limit'] == 1 ? '' : 'd-none'); ?>">
                         <p class="required">Số tiền khuyến mãi tối đa cho một đơn hàng</p>
                         <input
-                          class="price-sale-off-max require-field"
+                          class="price-sale-off-max require-field-limit"
                           type="number"
                           name="price_sale_off_max[]"
                           placeholder="Vui lòng nhập Số tiền khuyến mãi tối đa cho một đơn hàng"

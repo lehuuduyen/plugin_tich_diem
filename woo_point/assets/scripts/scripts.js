@@ -362,23 +362,41 @@ function openEditAllModal() {
 
   triggerEditAll <= 1 && modalNextStep3.addEventListener('click', function() {
     let checkPassStep3 = 0;
-    if (stepEditAll === 3) {
-      const contentStep3 = document.querySelector('.content-step-3-edit-all');
-      const requireInputStep3 = contentStep3.querySelectorAll('.require-field');
-      const limitInput = contentStep3.querySelector('.is-limit-input');
-      
-      requireInputStep3.forEach((input) => {
-        if (input.value === '') {
-          input.nextElementSibling.classList.remove(hiddenClass);
-        } else {
-          checkPassStep3++;
-          input.nextElementSibling.classList.add(hiddenClass);
-        }
-      });
+    const tableStep3 = document.querySelector('#table-step-3-edit');
+    const trStep3 = tableStep3.querySelectorAll('tr');
+    trStep3.forEach((tr) => {
+      let checkStep3 = 0;
+      const requireInputStep3 = tr.querySelector('.require-field');
+      const requireInputLimitStep3 = tr.querySelector('.require-field-limit');
+      const limitInput = tr.querySelector('.is-limit-input');
 
-      if (checkPassStep3 === requireInputStep3.length || (checkPassStep3 === 1 && limitInput.checked === false)) {
-        nextStep();
+      if (requireInputStep3.value === '') {
+        requireInputStep3.nextElementSibling.classList.remove(hiddenClass);
+      } else {
+        requireInputStep3.nextElementSibling.classList.add(hiddenClass);
+        checkStep3++;
       }
+
+      if (limitInput.checked) {
+        if (requireInputLimitStep3.value === '') {
+          requireInputLimitStep3.nextElementSibling.classList.remove(hiddenClass);
+        } else {
+          requireInputLimitStep3.nextElementSibling.classList.add(hiddenClass);
+          checkStep3++;
+        }
+
+        if (checkStep3 === 2) {
+          checkPassStep3++;
+        }
+      } else {
+        if (checkStep3 === 1) {
+          checkPassStep3++;
+        }
+      }
+    });
+
+    if (checkPassStep3 === trStep3.length) {
+      nextStep();
     }
   });
 
