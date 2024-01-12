@@ -202,7 +202,7 @@ function openEditModal(id) {
       const limitInput = contentStep3.querySelector('.is-limit-input');
       
       requireInputStep3.forEach((input) => {
-        if (input.value === '') {
+        if (input.value === '' || input.value == 0) {
           input.nextElementSibling.classList.remove(hiddenClass);
         } else {
           checkPassStep3++;
@@ -813,7 +813,7 @@ window.addEventListener('load', function() {
         }
 
         if (limitInput.checked) {
-          if (requireInputLimitStep3.value === '') {
+          if (requireInputLimitStep3.value === '' || requireInputLimitStep3.value == 0) {
             requireInputLimitStep3.nextElementSibling.classList.remove(hiddenClass);
           } else {
             requireInputLimitStep3.nextElementSibling.classList.add(hiddenClass);
