@@ -1,4 +1,5 @@
 const hiddenClass = 'd-none';
+const activeClass = 'active';
 let isEditAll = false;
 let step = 1;
 let stepEditAll = 1;
@@ -23,7 +24,9 @@ function handleAmountSpent(e) {
 
 function showEditAll() {
   document.getElementById('button-open-modal-edit-all').style.cssText = 'display: flex';
+  document.getElementById('button-open-modal-edit-all').classList.remove(hiddenClass);
   document.getElementById('button-open-modal-add').style.cssText = 'display: flex';
+  document.getElementById('button-open-modal-add').classList.remove(hiddenClass);
 }
 
 function hideEditAll() {
@@ -492,25 +495,23 @@ window.addEventListener('load', function() {
   
   const tabRank = document.getElementById('tabRank');
   const tabUser = document.getElementById('tabUser');
+  const tab1 = document.getElementById('tab-1');
+  const tab2 = document.getElementById('tab-2');
+  const buttonAdd = document.getElementById('button-open-modal-add');
+  const buttonEditAll = document.getElementById('button-open-modal-edit-all');
 
-  if (params.length === 1) {
-    tabRank.classList.add('active');
-    tabUser.classList.remove('active');
-
-    document.getElementById('tab-1').classList.add('active');
-    document.getElementById('tab-2').classList.remove('active');
-  } else if (params[2].split('=')[1] === 'dsxh') {
-    tabRank.classList.add('active');
-    tabUser.classList.remove('active');
-
-    document.getElementById('tab-1').classList.add('active');
-    document.getElementById('tab-2').classList.remove('active');
+  if (params.length === 1 || params[2].split('=')[1] === 'dsxh') {
+    tabRank.classList.add(activeClass);
+    tabUser.classList.remove(activeClass);
+    tab1.classList.add(activeClass);
+    tab2.classList.remove(activeClass);
   } else if (params[2].split('=')[1] === 'dstv') {
-    tabRank.classList.remove('active');
-    tabUser.classList.add('active');
-
-    document.getElementById('tab-1').classList.remove('active');
-    document.getElementById('tab-2').classList.add('active');
+    tabRank.classList.remove(activeClass);
+    tabUser.classList.add(activeClass);
+    tab1.classList.remove(activeClass);
+    tab2.classList.add(activeClass);
+    buttonAdd.classList.add(hiddenClass);
+    buttonEditAll.classList.add(hiddenClass);
   }
 
   const tabs = document.querySelectorAll('ul.nav-tabs > li');
@@ -520,13 +521,13 @@ window.addEventListener('load', function() {
 
   function switchTab(event) {
     event.preventDefault();
-    document.querySelector('ul.nav-tabs li.active').classList.remove('active');
-    document.querySelector('.tab-pane.active').classList.remove('active');
+    document.querySelector('ul.nav-tabs li.active').classList.remove(activeClass);
+    document.querySelector('.tab-pane.active').classList.remove(activeClass);
     const clickedTab = event.currentTarget;
     const anchor = event.target;
     const activePaneID = anchor.getAttribute('href');
-    clickedTab.classList.add('active');
-    document.querySelector(activePaneID).classList.add('active');
+    clickedTab.classList.add(activeClass);
+    document.querySelector(activePaneID).classList.add(activeClass);
   }
 
   /* Modal */
@@ -822,7 +823,7 @@ window.addEventListener('load', function() {
     document.getElementById(`step-${step}`).classList.add('current');
 
     for (let i = step - 1; i > 0; i--) {
-      document.getElementById(`step-${i}`).classList.add('active');
+      document.getElementById(`step-${i}`).classList.add(activeClass);
     }
 
     if (step === 3) {
@@ -840,7 +841,7 @@ window.addEventListener('load', function() {
   modalPrev.addEventListener('click', function() {
     document.getElementById(`step-${step}`).classList.remove('current');
     step--;
-    document.getElementById(`step-${step}`).classList.remove('active');
+    document.getElementById(`step-${step}`).classList.remove(activeClass);
 
     if (step === 1 || (step === 2 && isEditAll === false)) {
       modalPrev.classList.add(hiddenClass);
@@ -870,13 +871,13 @@ window.addEventListener('load', function() {
 
     for (let i = 1; i <= 4; i++) {
       document.getElementById(`step-${i}`).classList.remove('current');
-      document.getElementById(`step-${i}`).classList.remove('active');
+      document.getElementById(`step-${i}`).classList.remove(activeClass);
     }
 
     document.getElementById(`step-${step}`).classList.add('current');
 
     for (let i = step - 1; i > 0; i--) {
-      document.getElementById(`step-${i}`).classList.add('active');
+      document.getElementById(`step-${i}`).classList.add(activeClass);
     }
 
     changeModalContent();
