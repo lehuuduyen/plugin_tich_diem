@@ -1,9 +1,4 @@
 <?php
-  $table = $wpdb->prefix . 'woo_rank';
-  $tableSetting = $wpdb->prefix . 'woo_setting';
-  $ranks = $wpdb->get_results( 'SELECT * FROM ' . $table . ' ORDER BY id ASC', ARRAY_A );
-  $settings = $wpdb->get_results( 'SELECT * FROM ' . $tableSetting . ' ORDER BY id ASC', ARRAY_A );
-
   $currentPage = (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'dsxh') ? (int) $_GET['paged'] : 1;
   $total = count( $ranks );
   $perPage = 10;

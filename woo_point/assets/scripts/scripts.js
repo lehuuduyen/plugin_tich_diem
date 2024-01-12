@@ -378,7 +378,7 @@ function openEditAllModal() {
       }
 
       if (limitInput.checked) {
-        if (requireInputLimitStep3.value === '') {
+        if (requireInputLimitStep3.value === '' || requireInputLimitStep3.value == 0) {
           requireInputLimitStep3.nextElementSibling.classList.remove(hiddenClass);
         } else {
           requireInputLimitStep3.nextElementSibling.classList.add(hiddenClass);

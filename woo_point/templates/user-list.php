@@ -1,16 +1,9 @@
 <?php
-  $table = $wpdb->prefix . 'users';
-  $tableHistory = $wpdb->prefix . 'woo_history_user_point';
-  $tableRank = $wpdb->prefix . 'woo_rank';
   $status = [
     'PURCHASE' => 1,
     'USE_POINT' => 2,
     'USE_POINT_IN_PROCESS' => 4,
   ];
-
-  $ranks = $wpdb->get_results( 'SELECT name, minimum_spending FROM ' . $tableRank . ' ORDER BY minimum_spending ASC', ARRAY_A );
-  $userHistoryPoint = $wpdb->get_results( 'SELECT * FROM ' . $tableHistory . ' ORDER BY id ASC', ARRAY_A);
-  $users = $wpdb->get_results( 'SELECT ID, display_name FROM ' . $table . ' ORDER BY id ASC', ARRAY_A );
 
   $currentPage = (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'dstv') ? (int) $_GET['paged'] : 1;
   $total = count( $users );
