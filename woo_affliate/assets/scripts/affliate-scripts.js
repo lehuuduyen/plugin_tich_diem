@@ -1,7 +1,44 @@
 const _hiddenClass = 'd-none';
 const _activeClass = 'active';
 
+function openLowerModal(id) {
+  const modalOverlay = document.querySelector('.overlay');
+  const modalLowerLevel = document.querySelector(`.modal-lower-level-${id}`);
+
+  modalOverlay.classList.remove(_hiddenClass);
+  modalLowerLevel.classList.remove(_hiddenClass);
+}
+
+function closeLowerModal(id) {
+  const modalOverlay = document.querySelector('.overlay');
+  const modalLowerLevel = document.querySelector(`.modal-lower-level-${id}`);
+
+  modalOverlay.classList.add(_hiddenClass);
+  modalLowerLevel.classList.add(_hiddenClass);
+}
+
+function openIncomeModal(id) {
+  const modalOverlay = document.querySelector('.overlay');
+  const modalLowerLevel = document.querySelector(`.modal-income-${id}`);
+
+  modalOverlay.classList.remove(_hiddenClass);
+  modalLowerLevel.classList.remove(_hiddenClass);
+}
+
+function closeIncomeModal(id) {
+  const modalOverlay = document.querySelector('.overlay');
+  const modalLowerLevel = document.querySelector(`.modal-income-${id}`);
+
+  modalOverlay.classList.add(_hiddenClass);
+  modalLowerLevel.classList.add(_hiddenClass);
+}
+
 window.addEventListener('load', function() {
+  /* Common */
+  const removeMessageBtn = document.getElementById('remove-message');
+  removeMessageBtn && removeMessageBtn.addEventListener('click', function() {
+    document.getElementById('message').classList.add(hiddenClass);
+  });
   /* Tabs */
   const _sPageURL = window.location.search.substring(1);
   const _params = _sPageURL.split('&');
@@ -12,12 +49,12 @@ window.addEventListener('load', function() {
   const tabSetting2Content = document.getElementById('tab-setting-2-content');
 
   if (tabSetting1) {
-    if (_params.length === 1 || _params[2].split('=')[1] === 'setting1') {
+    if (_params.length === 1 || _params[1].split('=')[1] === 'setting1') {
       tabSetting1.classList.add(_activeClass);
       tabSetting2.classList.remove(_activeClass);
       tabSetting1Content.classList.add(_activeClass);
       tabSetting2Content.classList.remove(_activeClass);
-    } else if (_params[2].split('=')[1] === 'setting1') {
+    } else if (_params[1].split('=')[1] === 'setting2') {
       tabSetting1.classList.remove(_activeClass);
       tabSetting2.classList.add(_activeClass);
       tabSetting1Content.classList.remove(_activeClass);
