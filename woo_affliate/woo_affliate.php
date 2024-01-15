@@ -71,6 +71,9 @@ function plugin_setup_db()
           order_id INT NULL,
           commission INT NOT NULL,
           minimum_spending INT  NULL,
+          date VARCHAR(255)  NULL,
+          month VARCHAR(255)  NULL,
+          year VARCHAR(255)  NULL,
           status INT DEFAULT 1, 
           create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  ,
 
