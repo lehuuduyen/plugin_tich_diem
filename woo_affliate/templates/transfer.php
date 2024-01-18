@@ -56,8 +56,8 @@
         <td>
           <form action="?page=hoa-hong&paged=1&tab=setting3" method="POST">
             <select name="status">
-              <option value="4">4</option>
-              <option value="2">2</option>
+              <option value="4">Chờ đối soát</option>
+              <option value="2">Xác nhận</option>
             </select>
             <input hidden name="userCommissionId" value="<?php echo $userCommissionStatus4['id'] ?>" />
             <button type="submit" name="updateStatus" class="button">Cập nhật</button>

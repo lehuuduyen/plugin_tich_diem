@@ -128,7 +128,7 @@
         }
     ?>
       <tr>
-        <td><?php echo $userFilter['user_login'] ?></td>
+        <td><?php echo $userFilter['user_nicename'] . ' - ' . $userFilter['user_login'] ?></td>
         <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
         <td><?php echo $totalRevenue; ?></td>
         <td><?php echo $totalOrder; ?></td>

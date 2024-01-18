@@ -15,7 +15,7 @@
   $userCommissions = $wpdb->get_results( 'SELECT * FROM ' . $tableUserCommission . ' ORDER BY id ASC', ARRAY_A );
 
   if (isset($_GET['searchUser']) && isset($_GET['username'])) {
-    $usersSearch = $wpdb->get_results( 'SELECT * FROM ' . $tableUser . ' WHERE user_login LIKE "%' . $_GET['username'] . '%" ORDER BY id ASC', ARRAY_A );
+    $usersSearch = $wpdb->get_results( 'SELECT * FROM ' . $tableUser . ' WHERE user_login LIKE "%' . $_GET['username'] . '%" OR user_nicename LIKE "%' . $_GET['username'] . '%" ORDER BY id ASC', ARRAY_A );
     $usersDisplay = $usersSearch;
   } else {
     $usersDisplay = $users;
@@ -32,11 +32,11 @@
   $usersDisplay = array_slice($usersDisplay, $offset, $perPage);
 
   if (isset($_POST['saveSetting'])) {
-    $wpAffliate = get_option('wp_affliate');
+    $wpAffliate = get_option('woo_aff_setting');
     if ($wpAffliate) {
-      update_option('wp_affliate',$_POST['wp_affliate']);
+      update_option('woo_aff_setting',$_POST['woo_aff_setting']);
     } else {
-      add_option('wp_affliate',$_POST['wp_affliate']);
+      add_option('woo_aff_setting',$_POST['woo_aff_setting']);
     }
     $successMessage = 'Lưu cài đặt thành công';
   }
@@ -76,7 +76,7 @@
     </div>
     <div id="tab-setting-2-content" class="tab-pane-affliate">
       <form action="?page=hoa-hong&paged=1&tab=setting2" method="POST">
-        <input type="number" max="100000000" class="regular-text" name="wp_affliate" value="<?php echo get_option('wp_affliate'); ?>" />
+        <input type="number" max="100000000" class="regular-text" name="woo_aff_setting" value="<?php echo get_option('woo_aff_setting'); ?>" />
         <button type="submit" class="button button-primary" name="saveSetting">Lưu lại</button>
       </form>
     </div>

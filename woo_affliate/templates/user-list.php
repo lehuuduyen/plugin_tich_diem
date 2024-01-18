@@ -74,7 +74,7 @@
       }
     ?>
       <tr>
-        <td><?php echo $user['user_login'] ?></td>
+        <td><?php echo $user['user_nicename'] . ' - ' . $user['user_login'] ?></td>
         <td><?php echo $waitingReview[0]->waitingReview; ?></td>
         <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
         <td><?php echo $childCommissions - $commissionParent  ?></td>
