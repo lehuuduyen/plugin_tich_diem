@@ -1,5 +1,5 @@
 <?php
-  foreach ( $users as $user ) {
+  foreach ( $usersDisplay as $keyUserModal => $user ) {
     $childUser = array();
     foreach ($users as $user1) {
       $checkParent =  get_user_meta($user1['ID'], 'user_parent', true);
@@ -8,9 +8,9 @@
       }
     }
 ?>
-  <div class="modal d-none modal-lower-level-<?php echo $user['ID']; ?>">
+  <div class="modal d-none modal-lower-level-<?php echo $keyUserModal; ?>">
     <div class="modal-wrapper">
-      <p onclick="closeLowerModal(<?php echo $user['ID']; ?>)" class="close">✕</p>
+      <p onclick="closeLowerModal(<?php echo $keyUserModal; ?>)" class="close">✕</p>
       <div class="modal-header">
         <p>Cấp dưới</p>
       </div>

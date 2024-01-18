@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ( $usersDisplay as $user ) { 
+    <?php foreach ( $usersDisplay as $keyUser => $user ) { 
       $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
       $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
       
@@ -83,7 +83,7 @@
         <td><?php echo $totalRevenue; ?></td>
         <td><?php echo $totalOrder; ?></td>
         <td>
-          <button type="button" class="button" onclick="openLowerModal(<?php echo $user['ID']; ?>)">Hiển thị cấp dưới</button>
+          <button type="button" class="button" onclick="openLowerModal(<?php echo $keyUser; ?>)">Hiển thị cấp dưới</button>
         </td>
       </tr>
     <?php } ?>
