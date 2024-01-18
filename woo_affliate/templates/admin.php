@@ -76,7 +76,7 @@
     </div>
     <div id="tab-setting-2-content" class="tab-pane-affliate">
       <form action="?page=hoa-hong&paged=1&tab=setting2" method="POST">
-        <input type="number" class="regular-text" name="wp_affliate" value="<?php echo get_option('wp_affliate'); ?>" />
+        <input type="number" max="100000000" class="regular-text" name="wp_affliate" value="<?php echo get_option('wp_affliate'); ?>" />
         <button type="submit" class="button button-primary" name="saveSetting">Lưu lại</button>
       </form>
     </div>

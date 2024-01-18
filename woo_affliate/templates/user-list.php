@@ -3,7 +3,7 @@
   <input type="hidden" name="page" value="hoa-hong"/>
   <input type="hidden" name="paged" value="1"/>
   <input type="hidden" name="tab" value="setting1"/>
-  <input type="text" class="regular-text" placeholder="Điền tên user muốn tìm" name="username" value="<?php echo isset($_GET['username']) ? $_GET['username'] : ''; ?>" />
+  <input type="text" maxlength="48" class="regular-text" placeholder="Điền tên user muốn tìm" name="username" value="<?php echo isset($_GET['username']) ? $_GET['username'] : ''; ?>" />
   <button type="submit" name="searchUser" class="button button-primary">Tìm kiếm</button>
 </form>
 <br />
@@ -13,11 +13,11 @@
       <th>Tên</th>
       <th>Chờ đối soát<span class="d-none"><br /> (sum commission status 4 (CURRENT USER))</span></th>
       <th>Thực nhận <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
-      <th>Hoa hồng <span class="d-none"><br /> (sum commission status 1 <b style="color: red;">(USER CON)</b> - sum(2 CURRENT USER) - sum(4 CURRENT USER))</span></th>
+      <th>Hoa hồng <span class="d-none"><br /> tổng commission status 1 <b style="color: red;">(USER CON)</b> <br /> - tổng (commission status 2 <b style="color: blue">CURRENT USER</b>) <br /> - tổng (commission status 4 <b style="color: blue">CURRENT USER</b>))</span></th>
       <th>Tổng hoa hồng <span class="d-none"><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
       <th>Tổng hoa hồng đã rút <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
       <th>Tổng doanh thu <span class="d-none"><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
-      <th>Tổng đơn hàng <span class="d-none"><br /> sum (row status 1 (<b style="color: red;">USER CON:</b>))</span></th>
+      <th>Tổng đơn hàng <span class="d-none"><br /> <b style="color: green">tổng số dòng (row) </b>status 1 (<b style="color: red;">USER CON</b>)</span></th>
       <th>User con</th>
     </tr>
   </thead>
@@ -46,21 +46,17 @@
         $result[$commission2['id']][] = $commission2;
       }
   
-      $finalResult = [];
       $totalOrder = 0;
+      $commissionParent = 0;
       foreach ($result as $key => $value) {
-        $commission3 = 0;
         foreach ($value as $val2) {
           if ($val2['status'] == $status['PURCHASE']) {
-            $commission3 += $val2['commission'];
             $totalOrder++;
           }
           if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
-            $commission3 -= $val2['commission'];
+            $commissionParent += $val2['commission'];
           }
         }
-        
-        $finalResult[$key]['commission'] = $commission3;
       }
   
       $childCommissions = 0;
@@ -80,12 +76,12 @@
       <tr>
         <td><?php echo $user['user_login'] ?></td>
         <td><?php echo $waitingReview[0]->waitingReview; ?></td>
-          <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
-          <td><?php echo count($finalResult) > 0 ? $finalResult[$user['ID']]['commission'] : ''; ?></td>
-          <td><?php echo $childCommissions; ?></td>
-          <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
-          <td><?php echo $totalRevenue; ?></td>
-          <td><?php echo $totalOrder; ?></td>
+        <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
+        <td><?php echo $childCommissions - $commissionParent  ?></td>
+        <td><?php echo $childCommissions; ?></td>
+        <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
+        <td><?php echo $totalRevenue; ?></td>
+        <td><?php echo $totalOrder; ?></td>
         <td>
           <button type="button" class="button" onclick="openLowerModal(<?php echo $user['ID']; ?>)">Hiển thị cấp dưới</button>
         </td>
