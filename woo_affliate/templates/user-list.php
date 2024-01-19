@@ -46,13 +46,9 @@
         $result[$commission2['id']][] = $commission2;
       }
   
-      $totalOrder = 0;
       $commissionParent = 0;
       foreach ($result as $key => $value) {
         foreach ($value as $val2) {
-          if ($val2['status'] == $status['PURCHASE']) {
-            $totalOrder++;
-          }
           if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
             $commissionParent += $val2['commission'];
           }
@@ -61,6 +57,7 @@
   
       $childCommissions = 0;
       $totalRevenue = 0;
+      $totalOrder = 0;
       foreach ($users as $userChild) {
         $checkUserParent = get_user_meta($userChild['ID'], 'user_parent', true);
         if ($user['ID'] === $checkUserParent) {
@@ -68,6 +65,7 @@
             if ($commission4['user_id'] === $userChild['ID'] && $commission4['status'] == $status['PURCHASE']) {
               $childCommissions += $commission4['commission'];
               $totalRevenue += $commission4['total_order'];
+              $totalOrder++;
             }
           }
         }

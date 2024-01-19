@@ -21,7 +21,7 @@
     $usersDisplay = $users;
   }
 
-  $currentPage = (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'setting4') ? (int) $_GET['paged'] : 1;
+  $currentPage = (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'setting1') ? (int) $_GET['paged'] : 1;
   $total = count( $usersDisplay );
   $perPage = 10;
   $totalPages = ceil($total/ $perPage);
