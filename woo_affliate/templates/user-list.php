@@ -11,13 +11,13 @@
   <thead>
     <tr>
       <th>Tên</th>
-      <th>Chờ đối soát<span class="d-none"><br /> (sum commission status 4 (CURRENT USER))</span></th>
-      <th>Thực nhận <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
-      <th>Hoa hồng <span class="d-none"><br /> tổng commission status 1 <b style="color: red;">(USER CON)</b> <br /> - tổng (commission status 2 <b style="color: blue">CURRENT USER</b>) <br /> - tổng (commission status 4 <b style="color: blue">CURRENT USER</b>))</span></th>
-      <th>Tổng hoa hồng <span class="d-none"><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
-      <th>Tổng hoa hồng đã rút <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
-      <th>Tổng doanh thu <span class="d-none"><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
-      <th>Tổng đơn hàng <span class="d-none"><br /> <b style="color: green">tổng số dòng (row) </b>status 1 (<b style="color: red;">USER CON</b>)</span></th>
+      <th>Chờ đối soát<span><br /> (sum commission status 4 (CURRENT USER))</span></th>
+      <th>Thực nhận <span><br /> (sum commission status 2 (CURRENT USER))</span></th>
+      <th>Hoa hồng <span><br /> tổng commission status 1 <b style="color: red;">(USER CON)</b> <br /> - tổng (commission status 2 <b style="color: blue">CURRENT USER</b>) <br /> - tổng (commission status 4 <b style="color: blue">CURRENT USER</b>))</span></th>
+      <th>Tổng hoa hồng <span><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
+      <th>Tổng hoa hồng đã rút <span><br /> (sum commission status 2 (CURRENT USER))</span></th>
+      <th>Tổng doanh thu <span><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
+      <th>Tổng đơn hàng <span><br /> <b style="color: green">tổng số dòng (row) </b>status 1 (<b style="color: red;">USER CON</b>)</span></th>
       <th>User con</th>
     </tr>
   </thead>
@@ -25,7 +25,6 @@
     <?php foreach ( $usersDisplay as $keyUser => $user ) { 
       $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
       $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
-      
       $commissions = [];
       foreach ($userCommissions as $commission1) {
         if ($user['ID'] === $commission1['user_id']) {
@@ -39,7 +38,6 @@
             ));
         }
       }
-  
   
       $result = array();
       foreach ($commissions as $commission2) {
@@ -66,6 +64,18 @@
               $childCommissions += $commission4['commission'];
               $totalRevenue += $commission4['total_order'];
               $totalOrder++;
+            }
+          }
+          foreach ($users as $userChildLevel2) {
+            $checkUserParentLevel2 = get_user_meta($userChildLevel2['ID'], 'user_parent', true);
+            if ($userChild['ID'] === $checkUserParentLevel2) {
+              foreach ($userCommissions as $commission5) {
+                if ($commission5['user_id'] === $userChildLevel2['ID'] && $commission5['status'] == $status['PURCHASE']) {
+                  $childCommissions += $commission5['commission'];
+                  $totalRevenue += $commission5['total_order'];
+                  $totalOrder++;
+                }
+              }
             }
           }
         }

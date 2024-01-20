@@ -96,6 +96,18 @@
                 $totalOrder++;
               }
             }
+            foreach ($users as $userChildLevel2) {
+              $checkUserParentLevel2 = get_user_meta($userChildLevel2['ID'], 'user_parent', true);
+              if ($userChild['ID'] === $checkUserParentLevel2) {
+                foreach ($userCommissions as $commission5) {
+                  if ($commission5['user_id'] === $userChildLevel2['ID'] && $commission5['status'] == $status['PURCHASE']) {
+                    $childCommissions += $commission5['commission'];
+                    $totalRevenue += $commission5['total_order'];
+                    $totalOrder++;
+                  }
+                }
+              }
+            }
           }
         }
     ?>
