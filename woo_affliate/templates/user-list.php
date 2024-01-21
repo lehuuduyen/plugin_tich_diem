@@ -11,13 +11,13 @@
   <thead>
     <tr>
       <th>Tên</th>
-      <th>Chờ đối soát<span><br /> (sum commission status 4 (CURRENT USER))</span></th>
-      <th>Thực nhận <span><br /> (sum commission status 2 (CURRENT USER))</span></th>
-      <th>Hoa hồng <span><br /> tổng commission status 1 <b style="color: red;">(USER CON)</b> <br /> - tổng (commission status 2 <b style="color: blue">CURRENT USER</b>) <br /> - tổng (commission status 4 <b style="color: blue">CURRENT USER</b>))</span></th>
-      <th>Tổng hoa hồng <span><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
-      <th>Tổng hoa hồng đã rút <span><br /> (sum commission status 2 (CURRENT USER))</span></th>
-      <th>Tổng doanh thu <span><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
-      <th>Tổng đơn hàng <span><br /> <b style="color: green">tổng số dòng (row) </b>status 1 (<b style="color: red;">USER CON</b>)</span></th>
+      <th>Chờ đối soát<span class="d-none"><br /> (sum commission status 4 (CURRENT USER))</span></th>
+      <th>Thực nhận <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
+      <th>Hoa hồng <span class="d-none"><br /> tổng commission status 1 <b style="color: red;">(USER CON)</b> <br /> - tổng (commission status 2 <b style="color: blue">CURRENT USER</b>) <br /> - tổng (commission status 4 <b style="color: blue">CURRENT USER</b>))</span></th>
+      <th>Tổng hoa hồng <span class="d-none"><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
+      <th>Tổng hoa hồng đã rút <span class="d-none"><br /> (sum commission status 2 (CURRENT USER))</span></th>
+      <th>Tổng doanh thu <span class="d-none"><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
+      <th>Tổng đơn hàng <span class="d-none"><br /> <b style="color: green">tổng số dòng (row) </b>status 1 (<b style="color: red;">USER CON</b>)</span></th>
       <th>User con</th>
     </tr>
   </thead>
