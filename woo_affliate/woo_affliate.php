@@ -59,7 +59,21 @@ function plugin_setup_db()
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     }
   
+    $ptbd_table_name = $wpdb->prefix . 'woo_history_share_link';
+    if ($wpdb->get_var("SHOW TABLES LIKE '" . $ptbd_table_name . "'") != $ptbd_table_name) {
+      dbDelta("SET GLOBAL TIME_ZONE = '+07:00';");
+      $sql  = 'CREATE TABLE ' . $ptbd_table_name . '(
+          id BIGINT AUTO_INCREMENT,
+          user_id BIGINT NOT NULL,
+          user_parent BIGINT NOT NULL,
+          product INT NULL,
+          status INT DEFAULT 1, 
+          create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  ,
 
+                  PRIMARY KEY(id))';
+      //status =1 (them) =2  (tru)
+      dbDelta($sql);
+    }
 
     $ptbd_table_name = $wpdb->prefix . 'woo_history_user_commission';
     if ($wpdb->get_var("SHOW TABLES LIKE '" . $ptbd_table_name . "'") != $ptbd_table_name) {
@@ -104,7 +118,15 @@ function aff_update_wc_order_status_function($order_id, $order) {
       $prefix = $wpdb->prefix;
       $history = $wpdb->get_results("SELECT * FROM ".$prefix."woo_history_user_commission WHERE (order_id = '".$order_id."' AND status = '3')");
       if($history){
+        
           $id= $history[0]->id;
+          $userId= $history[0]->user_id;
+          $traffic = $wpdb->get_results("SELECT * FROM ".$prefix."woo_history_share_link WHERE (user_id = '".$userId."' AND status = '1') ORDER BY id DESC limit 1");
+          if($traffic){
+            $trafficId = $traffic[0]->id;
+            $wpdb->query($wpdb->prepare("UPDATE ".$prefix."woo_history_share_link SET status=0 WHERE user_id=$userId"));
+            $wpdb->query($wpdb->prepare("UPDATE ".$prefix."woo_history_share_link SET status=2 WHERE id=$trafficId"));
+          }
           $wpdb->query($wpdb->prepare("UPDATE ".$prefix."woo_history_user_commission SET status=1 WHERE id=$id"));
       }
       // Your custom code to update something based on the WooCommerce order status change

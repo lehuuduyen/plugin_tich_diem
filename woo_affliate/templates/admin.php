@@ -3,6 +3,8 @@
   $successMessage = '';
   $errorMessage = '';
   $tableUser = $wpdb->prefix . 'users';
+  $tableShareLink = $wpdb->prefix . 'woo_history_share_link';
+
   $tableUserCommission = $wpdb->prefix . 'woo_history_user_commission';
   $status = [
     'PURCHASE' => 1,
@@ -66,9 +68,7 @@
     <li id="tabSetting3" onclick="changeUrl(3)">
       <a href="#tab-setting-3-content">Danh sách chuyển tiền</a>
     </li>
-    <li id="tabSetting4" onclick="changeUrl(4)">
-      <a href="#tab-setting-4-content">Thống kê doanh thu</a>
-    </li>
+   
   </ul>
   <div class="tab-content">
     <div id="tab-setting-1-content" class="tab-pane-affliate active">
@@ -84,9 +84,7 @@
     <div id="tab-setting-3-content" class="tab-pane-affliate">
       <?php require_once(dirname(__FILE__) . '/transfer.php'); ?>
     </div>
-    <div id="tab-setting-4-content" class="tab-pane-affliate">
-      <?php require_once(dirname(__FILE__) . '/revenue-statistics.php'); ?>
-    </div>
+   
   </div>
   <div class="overlay d-none"></div>
   <?php require_once(dirname(__FILE__) . '/child-user-modal.php'); ?>
