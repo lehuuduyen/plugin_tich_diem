@@ -12,7 +12,9 @@
       foreach ($users as $user2) {
         $checkParent =  get_user_meta($user2['ID'], 'user_parent', true);
         if ($checkParent && $checkParent == $childUserLevel2['ID']) {
-          array_push($childUser, $user2);
+          $tempChild = $user2;
+          $tempChild['isLevel2'] = 1;
+          array_push($childUser, $tempChild);
         }
       }
     }
@@ -39,7 +41,12 @@
               </tr>
             <?php } else {
               foreach ($childUser as $child) {
-                $childCommissions = $wpdb->get_results( 'SELECT sum(commission) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
+                if (isset($child['isLevel2'])) {
+                  $childCommissions = $wpdb->get_results( 'SELECT sum(commission_level2) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
+                } else {
+                  $childCommissions = $wpdb->get_results( 'SELECT sum(commission) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
+                }
+                
                 $childRevenue = $wpdb->get_results( 'SELECT sum(total_order) as childRevenue FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
             ?>
               <tr>
