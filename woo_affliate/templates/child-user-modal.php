@@ -1,21 +1,15 @@
 <?php
-  foreach ( $usersDisplay as $keyUserModal => $user ) {
-    $childUser = array();
-    foreach ($users as $user1) {
-      $checkParent =  get_user_meta($user1['ID'], 'user_parent', true);
-      if ($checkParent && $checkParent == $user['ID']) {
-        array_push($childUser, $user1);
-      }
-    }
+foreach ($usersDisplay as $keyUserModal => $user) {
+  $childUser = array();
+  $userChild = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where status = 2 AND user_parent = ' . $user['ID'], ARRAY_A);
 
-    foreach ($childUser as $childUserLevel2) {
-      foreach ($users as $user2) {
-        $checkParent =  get_user_meta($user2['ID'], 'user_parent', true);
-        if ($checkParent && $checkParent == $childUserLevel2['ID']) {
-          array_push($childUser, $user2);
-        }
-      }
+  if ($userChild) {
+    foreach ($userChild as $child) {
+      array_push($childUser, $child);
     }
+  }
+
+
 ?>
   <div class="modal d-none modal-lower-level-<?php echo $keyUserModal; ?>">
     <div class="modal-wrapper">
@@ -37,17 +31,18 @@
               <tr>
                 <td>Không có cấp dưới</td>
               </tr>
-            <?php } else {
+              <?php } else {
               foreach ($childUser as $child) {
-                $childCommissions = $wpdb->get_results( 'SELECT sum(commission) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
-                $childRevenue = $wpdb->get_results( 'SELECT sum(total_order) as childRevenue FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC' );
-            ?>
-              <tr>
-                <td><?php echo $child['user_nicename'] . ' - ' . $child['user_login']; ?></td>
-                <td><?php echo $childCommissions[0]->childCommissions; ?></td>
-                <td><?php echo $childRevenue[0]->childRevenue; ?></td>
-              </tr>
-          <?php } }?>
+                $childCommissions = $wpdb->get_results('SELECT sum(commission) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC');
+                $childRevenue = $wpdb->get_results('SELECT sum(total_order) as childRevenue FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC');
+              ?>
+                <tr>
+                  <td><?php echo $child['user_nicename'] . ' - ' . $child['user_login']; ?></td>
+                  <td><?php echo $childCommissions[0]->childCommissions; ?></td>
+                  <td><?php echo $childRevenue[0]->childRevenue; ?></td>
+                </tr>
+            <?php }
+            } ?>
           </tbody>
         </table>
       </div>
