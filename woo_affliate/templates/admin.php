@@ -74,7 +74,7 @@
       <a href="#tab-setting-2-content">Cài đặt tỉ lệ hoa hồng</a>
     </li>
     <li id="tabSetting3" onclick="changeUrl(3)">
-      <a href="#tab-setting-3-content">Danh sách chuyển tiền</a>
+      <a href="#tab-setting-3-content">Yêu cầu rút</a>
     </li>
     <li id="tabSetting4" onclick="changeUrl(4)">
       <a href="#tab-setting-4-content">Thống kê doanh thu</a>

@@ -36,6 +36,7 @@
               <th>Tên cấp dưới</th>
               <th>Tổng hoa hồng <span class="d-none"><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
               <th>Tổng doanh thu <span class="d-none"><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +59,9 @@
                 <td><?php echo $child['user_nicename'] . ' - ' . $child['user_login']; ?></td>
                 <td><?php echo $childCommissions[0]->childCommissions; ?></td>
                 <td><?php echo $childRevenue[0]->childRevenue; ?></td>
+                <td>
+                  <button class="button">Hiển thị cấp dưới</button>
+                </td>
               </tr>
           <?php } }?>
           </tbody>
