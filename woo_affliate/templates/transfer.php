@@ -122,9 +122,9 @@
           ?>
             <form action="?page=hoa-hong&paged=1&tab=setting3" method="POST">
               <select name="status">
-                <option value="4">Chờ đối soát</option>
-                <option value="2">Xác nhận</option>
-                <option value="3">Huỷ</option>
+                <option value="<?php echo $status['USE_POINT_IN_PROCESS'] ; ?>">Chờ đối soát</option>
+                <option value="<?php echo $status['USE_POINT'] ; ?>">Xác nhận</option>
+                <option value="<?php echo $status['CANCEL'] ; ?>">Huỷ</option>
               </select>
               <input hidden name="userCommissionId" value="<?php echo $userCommissionStatus4['id'] ?>" />
               <button type="submit" name="updateStatus" class="button">Cập nhật</button>
