@@ -7,6 +7,7 @@
   $status = [
     'PURCHASE' => 1,
     'USE_POINT' => 2,
+    'CANCEL' => 3,
     'USE_POINT_IN_PROCESS' => 4,
   ];
 
