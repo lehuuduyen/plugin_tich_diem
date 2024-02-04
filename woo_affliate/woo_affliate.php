@@ -59,7 +59,21 @@ function plugin_setup_db()
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     }
   
+    $ptbd_table_name = $wpdb->prefix . 'woo_history_share_link';
+    if ($wpdb->get_var("SHOW TABLES LIKE '" . $ptbd_table_name . "'") != $ptbd_table_name) {
+      dbDelta("SET GLOBAL TIME_ZONE = '+07:00';");
+      $sql  = 'CREATE TABLE ' . $ptbd_table_name . '(
+          id BIGINT AUTO_INCREMENT,
+          user_id BIGINT NOT NULL,
+          user_parent BIGINT NOT NULL,
+          product INT NULL,
+          status INT DEFAULT 1, 
+          create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  ,
 
+                  PRIMARY KEY(id))';
+      //status =1 (them) =2  (tru)
+      dbDelta($sql);
+    }
 
     $ptbd_table_name = $wpdb->prefix . 'woo_history_user_commission';
     if ($wpdb->get_var("SHOW TABLES LIKE '" . $ptbd_table_name . "'") != $ptbd_table_name) {
@@ -86,7 +100,6 @@ function plugin_setup_db()
   } catch (\Exception $ex) {
   }
 }
-
 function active_plugin()
 {
   flush_rewrite_rules();

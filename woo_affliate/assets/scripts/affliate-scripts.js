@@ -42,9 +42,7 @@ function changeUrl(tabId) {
   if (tabId == 3) {
     window.history.pushState('', '', '?page=hoa-hong&paged=1&tab=setting3');
   }
-  if (tabId == 4) {
-    window.history.pushState('', '', '?page=hoa-hong&paged=1&tab=setting4');
-  }
+
 }
 
 let checkSelect = 0;
@@ -162,15 +160,13 @@ window.addEventListener('load', function() {
   const tabSetting1 = document.getElementById('tabSetting1');
   const tabSetting2 = document.getElementById('tabSetting2');
   const tabSetting3 = document.getElementById('tabSetting3');
-  const tabSetting4 = document.getElementById('tabSetting4');
   const tabSetting1Content = document.getElementById('tab-setting-1-content');
   const tabSetting2Content = document.getElementById('tab-setting-2-content');
   const tabSetting3Content = document.getElementById('tab-setting-3-content');
-  const tabSetting4Content = document.getElementById('tab-setting-4-content');
 
   function clickChangeTab(tabIndex) {
-    const listTab = [tabSetting1, tabSetting2, tabSetting3, tabSetting4];
-    const listContentTab = [tabSetting1Content, tabSetting2Content, tabSetting3Content, tabSetting4Content];
+    const listTab = [tabSetting1, tabSetting2, tabSetting3];
+    const listContentTab = [tabSetting1Content, tabSetting2Content, tabSetting3Content];
     listTab.forEach((tab, index) => {
       Number(tabIndex) === Number(index + 1) ? tab.classList.add(_activeClass) : tab.classList.remove(_activeClass);
     });
@@ -186,9 +182,7 @@ window.addEventListener('load', function() {
       clickChangeTab(2);
     } else if (_params[2].split('=')[1] === 'setting3') {
       clickChangeTab(3);
-    } else if (_params[2].split('=')[1] === 'setting4') {
-      clickChangeTab(4);
-    }
+    } 
   }
   
   const _tabs = document.querySelectorAll('ul.nav-tabs-affliate > li');
