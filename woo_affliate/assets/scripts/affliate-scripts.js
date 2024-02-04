@@ -10,6 +10,8 @@ function openLowerModal(id) {
 }
 
 function closeLowerModal(id) {
+  console.log(id)
+  alert(id)
   const modalOverlay = document.querySelector('.overlay');
   const modalLowerLevel = document.querySelector(`.modal-lower-level-${id}`);
   const lvName = document.querySelectorAll('.level-name');
