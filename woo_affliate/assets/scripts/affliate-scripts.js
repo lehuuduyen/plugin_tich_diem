@@ -29,7 +29,7 @@ function closeLowerModal(id) {
   });
 
   modalOverlay.classList.add(_hiddenClass);
-  console.log('modalLowerLevel')
+  console.log('modalLowerLevel ',id)
   console.log(modalLowerLevel)
   modalLowerLevel.classList.add(_hiddenClass);
 }
