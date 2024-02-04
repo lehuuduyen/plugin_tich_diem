@@ -92,11 +92,7 @@
         <input type="number" max="100000000" class="regular-text" name="woo_aff_setting" value="<?php echo get_option('woo_aff_setting'); ?>" />
         <button type="submit" class="button button-primary" name="saveSetting">Lưu lại</button>
       </form>
-      <form action="?page=hoa-hong&paged=1&tab=setting2" method="POST">
-        <h4>Cài đặt cấp 2</h4>
-        <input type="number" max="100000000" class="regular-text" name="woo_aff_setting_cap2" value="<?php echo get_option('woo_aff_setting_cap2'); ?>" />
-        <button type="submit" class="button button-primary" name="saveSettingLevel2">Lưu lại</button>
-      </form>
+     
     </div>
     <div id="tab-setting-3-content" class="tab-pane-affliate">
       <?php require_once(dirname(__FILE__) . '/transfer.php'); ?>

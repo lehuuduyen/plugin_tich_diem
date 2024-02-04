@@ -47,19 +47,7 @@
             $totalOrder++;
           }
         }
-        foreach ($users as $userChildLevel2) {
-          $checkUserParentLevel2 = get_user_meta($userChildLevel2['ID'], 'user_parent', true);
-          if ($userChild['ID'] === $checkUserParentLevel2) {
-            $countChild++;
-            foreach ($userCommissions as $commission5) {
-              if ($commission5['user_id'] === $userChildLevel2['ID'] && $commission5['status'] == $status['PURCHASE']) {
-                $childCommissions += $commission5['commission_level2'];
-                $totalRevenue += $commission5['total_order'];
-                $totalOrder++;
-              }
-            }
-          }
-        }
+        
       }
     }
 
@@ -84,7 +72,7 @@
       <input type="text" maxlength="48" placeholder="Điền tên user muốn tìm" name="username" value="<?php echo isset($_GET['username']) ? $_GET['username'] : ''; ?>" />
       <button type="submit" name="searchUser" class="button button-primary">Tìm kiếm</button>
     </form>
-    <form action="" method="GET">
+    <!-- <form action="" method="GET">
       <input type="hidden" name="page" value="hoa-hong"/>
       <input type="hidden" name="paged" value="1"/>
       <input type="hidden" name="tab" value="setting1"/>
@@ -101,7 +89,7 @@
       <input type="hidden" name="paged" value="1"/>
       <input type="hidden" name="tab" value="setting1"/>
       <button type="submit" class="button button-primary">Bỏ tìm kiếm</button>
-    </form>
+    </form> -->
   </div>
   <div class="flex-center">
     <div>
@@ -178,19 +166,7 @@
                 $totalOrder++;
               }
             }
-            foreach ($users as $userChildLevel2) {
-              $checkUserParentLevel2 = get_user_meta($userChildLevel2['ID'], 'user_parent', true);
-              if ($userChild['ID'] === $checkUserParentLevel2) {
-                $countChild++;
-                foreach ($userCommissions as $commission5) {
-                  if ($commission5['user_id'] === $userChildLevel2['ID'] && $commission5['status'] == $status['PURCHASE']) {
-                    $childCommissions += $commission5['commission_level2'];
-                    $totalRevenue += $commission5['total_order'];
-                    $totalOrder++;
-                  }
-                }
-              }
-            }
+            
           }
         }
 
@@ -278,18 +254,7 @@
               $totalOrder++;
             }
           }
-          foreach ($users as $userChildLevel2) {
-            $checkUserParentLevel2 = get_user_meta($userChildLevel2['ID'], 'user_parent', true);
-            if ($userChild['ID'] === $checkUserParentLevel2) {
-              foreach ($userCommissions as $commission5) {
-                if ($commission5['user_id'] === $userChildLevel2['ID'] && $commission5['status'] == $status['PURCHASE']) {
-                  $childCommissions += $commission5['commission_level2'];
-                  $totalRevenue += $commission5['total_order'];
-                  $totalOrder++;
-                }
-              }
-            }
-          }
+          
         }
       }
 
