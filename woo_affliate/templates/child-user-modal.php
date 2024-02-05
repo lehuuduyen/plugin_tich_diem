@@ -1,8 +1,7 @@
 <?php
 foreach ($usersDisplay as $keyUserModal => $user) {
   $childUser = array();
-  $userChild = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where status = 2 AND user_parent = ' . $user['ID'], ARRAY_A);
-
+  $userChild = $wpdb->get_results('SELECT * FROM ' . $tableUserCommission . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableUserCommission . '.user_id  where status = 1 AND user_parent = ' . $user['ID'], ARRAY_A);
   if ($userChild) {
     foreach ($userChild as $child) {
       array_push($childUser, $child);
@@ -24,6 +23,7 @@ foreach ($usersDisplay as $keyUserModal => $user) {
               <th>Tên cấp dưới</th>
               <th>Tổng hoa hồng <span class="d-none"><br /> sum (commision status 1 (<b style="color: red;">USER CON</b>))</span></th>
               <th>Tổng doanh thu <span class="d-none"><br /> sum (total_order status 1 (<b style="color: red;">USER CON</b>))</span></th>
+              <th>Sản phẩm</th>
             </tr>
           </thead>
           <tbody>
@@ -33,13 +33,15 @@ foreach ($usersDisplay as $keyUserModal => $user) {
               </tr>
               <?php } else {
               foreach ($childUser as $child) {
-                $childCommissions = $wpdb->get_results('SELECT sum(commission) as childCommissions FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC');
-                $childRevenue = $wpdb->get_results('SELECT sum(total_order) as childRevenue FROM ' . $tableUserCommission . ' WHERE user_id = ' . $child['ID'] . ' AND status = ' . $status['PURCHASE'] . ' ORDER BY id ASC');
+                $childCommissions = $child['commission'];
+                $childRevenue = $child['total_order'];
+                $childProductId = $child['product_id'];
               ?>
                 <tr>
                   <td><?php echo $child['user_nicename'] . ' - ' . $child['user_login']; ?></td>
-                  <td><?php echo $childCommissions[0]->childCommissions; ?></td>
-                  <td><?php echo $childRevenue[0]->childRevenue; ?></td>
+                  <td><?php echo $childCommissions; ?></td>
+                  <td><?php echo $childRevenue; ?></td>
+                  <td><a href="/wp-admin/post.php?post=<?php echo $childProductId; ?>&action=edit"><?php echo $childProductId; ?></a></td>
                 </tr>
             <?php }
             } ?>

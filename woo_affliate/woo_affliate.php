@@ -81,6 +81,8 @@ function plugin_setup_db()
       $sql  = 'CREATE TABLE ' . $ptbd_table_name . '(
           id BIGINT AUTO_INCREMENT,
           user_id BIGINT NOT NULL,
+          user_parent BIGINT  NULL,
+          product_id INT NULL,
           total_order INT NOT NULL,
           order_id INT NULL,
           commission INT DEFAULT 0,

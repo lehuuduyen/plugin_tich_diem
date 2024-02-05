@@ -1,74 +1,69 @@
 <?php
-  $arrayCommission = [];
-  $totalCommission = 0;
-  foreach ( $users as $keyUser => $user ) { 
-    $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
-    $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
-    $commissions = [];
-    $countChild = 0;
-    foreach ($userCommissions as $commission1) {
-      if ($user['ID'] === $commission1['user_id']) {
-        array_push(
-          $commissions,
-          array(
-            'id' => $commission1['user_id'],
-            'status' => $commission1['status'],
-            'commission' => $commission1['commission'],
-            'total_order' => $commission1['total_order']
-          ));
-      }
+$arrayCommission = [];
+$totalCommission = 0;
+foreach ($users as $keyUser => $user) {
+  $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
+  $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
+  $commissions = [];
+  $countChild = 0;
+  foreach ($userCommissions as $commission1) {
+    if ($user['ID'] === $commission1['user_id']) {
+      array_push(
+        $commissions,
+        array(
+          'id' => $commission1['user_id'],
+          'status' => $commission1['status'],
+          'commission' => $commission1['commission'],
+          'total_order' => $commission1['total_order']
+        )
+      );
     }
-
-    $result = array();
-    foreach ($commissions as $commission2) {
-      $result[$commission2['id']][] = $commission2;
-    }
-
-    $commissionParent = 0;
-    foreach ($result as $key => $value) {
-      foreach ($value as $val2) {
-        if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
-          $commissionParent += $val2['commission'];
-        }
-      }
-    }
-
-    $childCommissions = 0;
-    $totalRevenue = 0;
-    $totalOrder = 0;
-    foreach ($users as $userChild) {
-      $checkUserParent = get_user_meta($userChild['ID'], 'user_parent', true);
-      if ($user['ID'] === $checkUserParent) {
-        $countChild++;
-        foreach ($userCommissions as $commission4) {
-          if ($commission4['user_id'] === $userChild['ID'] && $commission4['status'] == $status['PURCHASE']) {
-            $childCommissions += $commission4['commission'];
-            $totalRevenue += $commission4['total_order'];
-            $totalOrder++;
-          }
-        }
-        
-      }
-    }
-
-    array_push($arrayCommission, [
-      'id' => $user['ID'],
-      'commission' => $childCommissions - $commissionParent,
-      'user_nicename' => $user['user_nicename'],
-      'user_login' => $user['user_login'],
-      'countChild' => $countChild
-    ]);
-    $totalCommission += $childCommissions - $commissionParent;
   }
+
+  $result = array();
+  foreach ($commissions as $commission2) {
+    $result[$commission2['id']][] = $commission2;
+  }
+
+  $commissionParent = 0;
+  foreach ($result as $key => $value) {
+    foreach ($value as $val2) {
+      if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
+        $commissionParent += $val2['commission'];
+      }
+    }
+  }
+
+  $childCommissions = 0;
+  $totalRevenue = 0;
+  $totalOrder = 0;
+
+  foreach ($userCommissions as $commission4) {
+    if ($commission4['user_parent'] === $user['ID'] && $commission4['status'] == $status['PURCHASE']) {
+      $childCommissions += $commission4['commission'];
+      $totalRevenue += $commission4['total_order'];
+      $totalOrder++;
+    }
+  }
+
+  array_push($arrayCommission, [
+    'id' => $user['ID'],
+    'commission' => $childCommissions - $commissionParent,
+    'user_nicename' => $user['user_nicename'],
+    'user_login' => $user['user_login'],
+    'countChild' => $countChild
+  ]);
+  $totalCommission += $childCommissions - $commissionParent;
+}
 ?>
 
 <br />
 <div class="flex-center space-between">
   <div class="flex-center">
     <form action="" method="GET" class="flex-center">
-      <input type="hidden" name="page" value="hoa-hong"/>
-      <input type="hidden" name="paged" value="1"/>
-      <input type="hidden" name="tab" value="setting1"/>
+      <input type="hidden" name="page" value="hoa-hong" />
+      <input type="hidden" name="paged" value="1" />
+      <input type="hidden" name="tab" value="setting1" />
       <input type="text" maxlength="48" placeholder="Điền tên user muốn tìm" name="username" value="<?php echo isset($_GET['username']) ? $_GET['username'] : ''; ?>" />
       <button type="submit" name="searchUser" class="button button-primary">Tìm kiếm</button>
     </form>
@@ -120,74 +115,70 @@
   </thead>
   <tbody>
     <?php
-      foreach ( $usersDisplay as $keyUser => $user ) { 
-        $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
-        $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
-        $commissions = [];
-        $countChild = 0;
-        foreach ($userCommissions as $commission1) {
-          if ($user['ID'] === $commission1['user_id']) {
-            array_push(
-              $commissions,
-              array(
-                'id' => $commission1['user_id'],
-                'status' => $commission1['status'],
-                'commission' => $commission1['commission'],
-                'total_order' => $commission1['total_order']
-              ));
-          }
+    foreach ($usersDisplay as $keyUser => $user) {
+      $waitingReview = $wpdb->get_results('SELECT SUM(commission) as waitingReview FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT_IN_PROCESS']);
+      $actuallyReceive = $wpdb->get_results('SELECT SUM(commission) as actuallyReceive FROM ' . $tableUserCommission . ' WHERE user_id = ' . $user['ID'] . ' AND status = ' . $status['USE_POINT']);
+      $commissions = [];
+      $countChild = 0;
+      foreach ($userCommissions as $commission1) {
+        if ($user['ID'] === $commission1['user_id']) {
+          array_push(
+            $commissions,
+            array(
+              'id' => $commission1['user_id'],
+              'status' => $commission1['status'],
+              'commission' => $commission1['commission'],
+              'total_order' => $commission1['total_order']
+            )
+          );
         }
-    
-        $result = array();
-        foreach ($commissions as $commission2) {
-          $result[$commission2['id']][] = $commission2;
-        }
-    
-        $commissionParent = 0;
-        foreach ($result as $key => $value) {
-          foreach ($value as $val2) {
-            if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
-              $commissionParent += $val2['commission'];
-            }
-          }
-        }
-    
-        $childCommissions = 0;
-        $totalRevenue = 0;
-        $totalOrder = 0;
-        foreach ($users as $userChild) {
-          $checkUserParent = get_user_meta($userChild['ID'], 'user_parent', true);
-          if ($user['ID'] === $checkUserParent) {
-            $countChild++;
-            foreach ($userCommissions as $commission4) {
-              if ($commission4['user_id'] === $userChild['ID'] && $commission4['status'] == $status['PURCHASE']) {
-                $childCommissions += $commission4['commission'];
-                $totalRevenue += $commission4['total_order'];
-                $totalOrder++;
-              }
-            }
-            
-          }
-        }
+      }
 
-        $stt++;
-        if (!isset($_GET['topCommmission']) && !isset($_GET['topIntroduce'])) {
+      $result = array();
+      foreach ($commissions as $commission2) {
+        $result[$commission2['id']][] = $commission2;
+      }
+
+      $commissionParent = 0;
+      foreach ($result as $key => $value) {
+        foreach ($value as $val2) {
+          if ($val2['status'] == $status['USE_POINT'] || $val2['status'] == $status['USE_POINT_IN_PROCESS']) {
+            $commissionParent += $val2['commission'];
+          }
+        }
+      }
+
+      $childCommissions = 0;
+      $totalRevenue = 0;
+      $totalOrder = 0;
+      
+      foreach ($userCommissions as $commission4) {
+        if ($commission4['user_parent'] === $user['ID'] && $commission4['status'] == $status['PURCHASE']) {
+          $childCommissions += $commission4['commission'];
+          $totalRevenue += $commission4['total_order'];
+          $totalOrder++;
+        }
+      }
+
+      $stt++;
+      if (!isset($_GET['topCommmission']) && !isset($_GET['topIntroduce'])) {
     ?>
-      <tr>
-        <td><?php echo $stt + $paged - 1; ?></td>
-        <td><?php echo $user['user_nicename'] . ' - ' . $user['user_login'] ?></td>
-        <td><?php echo $waitingReview[0]->waitingReview; ?></td>
-        <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
-        <td><?php echo $childCommissions - $commissionParent; ?></td>
-        <td><?php echo $childCommissions; ?></td>
-        <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
-        <td><?php echo $totalRevenue; ?></td>
-        <td><?php echo $totalOrder; ?></td>
-        <td>
-          <button type="button" class="button" onclick="openLowerModal('<?php echo $user['ID']; ?>')">Hiển thị cấp dưới</button>
-        </td>
-      </tr>
-    <?php } }
+        <tr>
+          <td><?php echo $stt + $paged - 1; ?></td>
+          <td><?php echo $user['user_nicename'] . ' - ' . $user['user_login'] ?></td>
+          <td><?php echo $waitingReview[0]->waitingReview; ?></td>
+          <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
+          <td><?php echo $childCommissions - $commissionParent; ?></td>
+          <td><?php echo $childCommissions; ?></td>
+          <td><?php echo $actuallyReceive[0]->actuallyReceive; ?></td>
+          <td><?php echo $totalRevenue; ?></td>
+          <td><?php echo $totalOrder; ?></td>
+          <td>
+            <button type="button" class="button" onclick="openLowerModal('<?php echo $user['ID']; ?>')">Hiển thị cấp dưới</button>
+          </td>
+        </tr>
+      <?php }
+    }
     if (isset($_GET['topCommmission']) || isset($_GET['topIntroduce'])) {
       $max = $arrayCommission[0];
       $tempMaxCommission = $arrayCommission[0]['commission'];
@@ -223,15 +214,16 @@
               'status' => $commission1['status'],
               'commission' => $commission1['commission'],
               'total_order' => $commission1['total_order']
-            ));
+            )
+          );
         }
       }
-  
+
       $result = array();
       foreach ($commissions as $commission2) {
         $result[$commission2['id']][] = $commission2;
       }
-  
+
       $commissionParent = 0;
       foreach ($result as $key => $value) {
         foreach ($value as $val2) {
@@ -240,25 +232,20 @@
           }
         }
       }
-  
+
       $childCommissions = 0;
       $totalRevenue = 0;
       $totalOrder = 0;
-      foreach ($users as $userChild) {
-        $checkUserParent = get_user_meta($userChild['ID'], 'user_parent', true);
-        if ($max['id'] === $checkUserParent) {
-          foreach ($userCommissions as $commission4) {
-            if ($commission4['user_id'] === $userChild['ID'] && $commission4['status'] == $status['PURCHASE']) {
-              $childCommissions += $commission4['commission'];
-              $totalRevenue += $commission4['total_order'];
-              $totalOrder++;
-            }
-          }
-          
+      foreach ($userCommissions as $commission4) {
+        if ($commission4['user_parent'] === $max['ID'] && $commission4['status'] == $status['PURCHASE']) {
+          $childCommissions += $commission4['commission'];
+          $totalRevenue += $commission4['total_order'];
+          $totalOrder++;
         }
       }
 
-    ?>
+
+      ?>
       <tr>
         <td>1</td>
         <td><?php echo $max['user_nicename'] . ' - ' . $max['user_login'] ?></td>
@@ -275,29 +262,29 @@
       </tr>
     <?php
     }
-  ?>
+    ?>
   </tbody>
 </table>
 <?php if (!isset($_GET['topCommmission']) && !isset($_GET['topIntroduce'])) { ?>
   <ul class="pagination">
     <?php
-      if ( (! empty( $_GET['paged'] )) && ($_GET['tab'] == 'setting1') ) $pg = $_GET['paged'];
-      else $pg = 1;
-      $paramFilter = isset($_GET['searchUser']) && isset($_GET['username']) ? '&username=' . $_GET['username'] . '&searchUser' : '';
+    if ((!empty($_GET['paged'])) && ($_GET['tab'] == 'setting1')) $pg = $_GET['paged'];
+    else $pg = 1;
+    $paramFilter = isset($_GET['searchUser']) && isset($_GET['username']) ? '&username=' . $_GET['username'] . '&searchUser' : '';
 
-      if ( isset( $pg ) && $pg > 1 ) {
-        echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=hoa-hong&paged=' . ( $pg - 1 ) . '&tab=setting1' . $paramFilter . '">«</a></li>';
-      }
+    if (isset($pg) && $pg > 1) {
+      echo '<li><a class="button" href="' . site_url() . '/wp-admin/admin.php?page=hoa-hong&paged=' . ($pg - 1) . '&tab=setting1' . $paramFilter . '">«</a></li>';
+    }
 
-      for ( $i = 1; $i <= $totalPages; $i++ ) {
-        if ( isset( $pg ) && $pg == $i )  $active = 'active';
-        else $active = '';
-        echo '<li><a href="'.site_url().'/wp-admin/admin.php?page=hoa-hong&paged=' . $i . '&tab=setting1' . $paramFilter . '" class="button ' . $active . '">' . $i . '</a></li>';
-      }
+    for ($i = 1; $i <= $totalPages; $i++) {
+      if (isset($pg) && $pg == $i)  $active = 'active';
+      else $active = '';
+      echo '<li><a href="' . site_url() . '/wp-admin/admin.php?page=hoa-hong&paged=' . $i . '&tab=setting1' . $paramFilter . '" class="button ' . $active . '">' . $i . '</a></li>';
+    }
 
-      if ( isset( $pg ) && $pg < $totalPages ) {
-        echo '<li><a class="button" href="'.site_url().'/wp-admin/admin.php?page=hoa-hong&paged=' . ( $pg + 1 ). '&tab=setting1' . $paramFilter . '">»</a></li>';
-      }
+    if (isset($pg) && $pg < $totalPages) {
+      echo '<li><a class="button" href="' . site_url() . '/wp-admin/admin.php?page=hoa-hong&paged=' . ($pg + 1) . '&tab=setting1' . $paramFilter . '">»</a></li>';
+    }
     ?>
   </ul>
 <?php } ?>
