@@ -107,5 +107,8 @@
     </div>
   </div>
   <div class="overlay d-none"></div>
-  <?php require_once(dirname(__FILE__) . '/child-user-modal.php'); ?>
+  <?php
+    $users = $wpdb->get_results( 'SELECT * FROM ' . $tableUser . ' WHERE user_login != "77777777" ORDER BY id ASC', ARRAY_A );
+    require_once(dirname(__FILE__) . '/child-user-modal.php');
+  ?>
 </div>

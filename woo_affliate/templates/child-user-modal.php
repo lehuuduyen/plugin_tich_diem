@@ -1,5 +1,5 @@
 <?php
-  foreach ( $usersDisplay as $keyUserModal => $user ) {
+  foreach ($users as $user) {
     $childUser = array();
     foreach ($users as $user1) {
       $checkParent =  get_user_meta($user1['ID'], 'user_parent', true);
