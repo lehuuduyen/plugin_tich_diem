@@ -2,9 +2,18 @@
 foreach ($usersDisplay as $keyUserModal => $user) {
   $childUser = array();
   $userChild = $wpdb->get_results('SELECT * FROM ' . $tableUserCommission . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableUserCommission . '.user_id  where status = 1 AND user_parent = ' . $user['ID'], ARRAY_A);
+  $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where   status != 2 AND user_parent = ' . $user['ID'], ARRAY_A);
   if ($userChild) {
     foreach ($userChild as $child) {
       array_push($childUser, $child);
+    }
+  }
+  if ($userClickShare) {
+    foreach ($userClickShare as $userClick) {
+      $userClick['commission'] = 0;
+      $userClick['total_order'] = 0;
+      $userClick['product_id'] = $userClick['product'];
+      array_push($childUser, $userClick);
     }
   }
 
