@@ -4,10 +4,10 @@ foreach ($usersDisplay as $keyUserModal => $user) {
   $tempIds = array();
   
   $userChild = $wpdb->get_results('select '.$tableUser.'.ID,
-  '.$tableUser.'.user_login as `mobile`,
+  '.$tableUser.'.user_login as `mobile`,'.$tableUser.'.user_nicename ,
    SUM('.$tableUserCommission.'.commission) as commission, 
    SUM('.$tableUserCommission.'.total_order) as total_order, 
-   '.$tableUserCommission.'.create_at 
+   '.$tableUserCommission.'.create_at,'.$tableUserCommission.'.product_id  
    from '.$tableUserCommission.' 
    inner join '.$tableUser.' on '.$tableUser.'.ID = '.$tableUserCommission.'.user_id
    where '.$tableUserCommission.'.user_parent = '.$user['ID'].' and 
@@ -18,15 +18,16 @@ foreach ($usersDisplay as $keyUserModal => $user) {
     order by '.$tableUserCommission.'.ID desc', ARRAY_A);
     if ($userChild) {
       foreach ($userChild as $child) {
-        $tempIds[]=$child->id;
+        $tempIds[]=$child['ID'];
         array_push($childUser, $child);
       }
     }
     
+    
   $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where ' . $tableShareLink . '.status != 2 AND user_parent = ' . $user['ID'].' AND ' . $tableShareLink . '.user_id not in ('.implode(",",$tempIds).') 
   group by '.$tableUser.'.ID, 
     '.$tableUser.'.user_login, 
-    '.$tableShareLink.'.create_at` ', ARRAY_A);
+    '.$tableShareLink.'.create_at ', ARRAY_A);
   
   if ($userClickShare) {
     foreach ($userClickShare as $userClick) {
