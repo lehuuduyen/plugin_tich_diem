@@ -5,7 +5,7 @@ foreach ($usersDisplay as $keyUserModal => $user) {
   
   $userChild = $wpdb->get_results('select '.$tableUser.'.ID,
   '.$tableUser.'.user_login as `mobile`,
-   SUM('.$tableUserCommission.'.commission) as total_commission, 
+   SUM('.$tableUserCommission.'.commission) as commission, 
    SUM('.$tableUserCommission.'.total_order) as total_order, 
    '.$tableUserCommission.'.create_at 
    from '.$tableUserCommission.' 
