@@ -1,13 +1,32 @@
 <?php
 foreach ($usersDisplay as $keyUserModal => $user) {
   $childUser = array();
-  $userChild = $wpdb->get_results('SELECT * FROM ' . $tableUserCommission . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableUserCommission . '.user_id  where status = 1 AND user_parent = ' . $user['ID'], ARRAY_A);
-  $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where   status != 2 AND user_parent = ' . $user['ID'], ARRAY_A);
-  if ($userChild) {
-    foreach ($userChild as $child) {
-      array_push($childUser, $child);
+  $tempIds = array();
+  
+  $userChild = $wpdb->get_results('select '.$tableUser.'.ID,
+  '.$tableUser.'.user_login as `mobile`,
+   SUM('.$tableUserCommission.'.commission) as total_commission, 
+   SUM('.$tableUserCommission.'.total_order) as total_order, 
+   '.$tableUserCommission.'.create_at 
+   from '.$tableUserCommission.' 
+   inner join '.$tableUser.' on '.$tableUser.'.ID = '.$tableUserCommission.'.user_id` 
+   where `user_parent` = '.$user['ID'].' and
+    `status` = 1 
+    group by '.$tableUser.'.ID, 
+    '.$tableUser.'.user_login, 
+    '.$tableUserCommission.'.create_at` 
+    order by `ID` desc', ARRAY_A);
+    if ($userChild) {
+      foreach ($userChild as $child) {
+        $tempIds[]=$child->id;
+        array_push($childUser, $child);
+      }
     }
-  }
+  $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where   status != 2 AND user_parent = ' . $user['ID'].' AND ' . $tableShareLink . '.user_id not in ('.implode(",",$tempIds).') 
+  group by '.$tableUser.'.ID, 
+    '.$tableUser.'.user_login, 
+    '.$tableShareLink.'.create_at` ', ARRAY_A);
+  
   if ($userClickShare) {
     foreach ($userClickShare as $userClick) {
       $userClick['commission'] = 0;
