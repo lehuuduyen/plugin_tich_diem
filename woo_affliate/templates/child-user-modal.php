@@ -23,9 +23,8 @@ foreach ($usersDisplay as $keyUserModal => $user) {
         array_push($childUser, $child);
       }
     }
-    echo '<pre>';
-    print_r($userChild);
-    die;
+    echo '<pre>---------------';
+    var_dump($userChild);
     
     
   $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where ' . $tableShareLink . '.status != 2 AND user_parent = ' . $user['ID'].' AND ' . $tableShareLink . '.user_id not in ('.implode(",",$tempIds).') 
