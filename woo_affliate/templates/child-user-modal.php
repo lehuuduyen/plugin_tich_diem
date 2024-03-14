@@ -23,23 +23,22 @@ foreach ($usersDisplay as $keyUserModal => $user) {
         array_push($childUser, $child);
       }
     }
-    echo '<pre>---------------';
-    var_dump($userChild);
-    
-    
   $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where ' . $tableShareLink . '.status != 2 AND user_parent = ' . $user['ID'].' AND ' . $tableShareLink . '.user_id not in ('.implode(",",$tempIds).') 
   group by '.$tableUser.'.ID, 
     '.$tableUser.'.user_login, 
     '.$tableShareLink.'.create_at ', ARRAY_A);
-  
-  if ($userClickShare) {
-    foreach ($userClickShare as $userClick) {
-      $userClick['commission'] = 0;
-      $userClick['total_order'] = 0;
-      $userClick['product_id'] = $userClick['product'];
-      array_push($childUser, $userClick);
-    }
+  $tempClick =[];
+  foreach($userClickShare as $val){
+      if(!in_array($val['ID'],$tempClick)){
+          $tempClick[]=$val['ID'];
+          $val['commission'] = 0;
+          $val['total_order'] = 0;
+          $val['product_id'] = $val['product'];
+          array_push($childUser, $val);
+
+      }
   }
+ 
 
 
 ?>
