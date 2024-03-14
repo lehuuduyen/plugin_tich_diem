@@ -7,9 +7,10 @@ foreach ($usersDisplay as $keyUserModal => $user) {
   '.$tableUser.'.user_login as `mobile`,'.$tableUser.'.user_nicename ,
    SUM('.$tableUserCommission.'.commission) as commission, 
    SUM('.$tableUserCommission.'.total_order) as total_order, 
-   '.$tableUserCommission.'.create_at,'.$tableUserCommission.'.product_id  
+   '.$tableUserCommission.'.create_at,'.$tableUserCommission.'.product_id  ,'.$tablePost.'.post_title 
    from '.$tableUserCommission.' 
    inner join '.$tableUser.' on '.$tableUser.'.ID = '.$tableUserCommission.'.user_id
+   inner join '.$tablePost.' on '.$tablePost.'.ID = '.$tableUserCommission.'.product_id
    where '.$tableUserCommission.'.user_parent = '.$user['ID'].' and 
    '.$tableUserCommission.'.status = 1 
     group by '.$tableUser.'.ID, 
@@ -22,6 +23,9 @@ foreach ($usersDisplay as $keyUserModal => $user) {
         array_push($childUser, $child);
       }
     }
+    echo '<pre>';
+    print_r($userChild);
+    die;
     
     
   $userClickShare = $wpdb->get_results('SELECT * FROM ' . $tableShareLink . ' INNER JOIN '.$tableUser.' ON '.$tableUser.'.ID=' . $tableShareLink . '.user_id  where ' . $tableShareLink . '.status != 2 AND user_parent = ' . $user['ID'].' AND ' . $tableShareLink . '.user_id not in ('.implode(",",$tempIds).') 

@@ -5,6 +5,7 @@
   $tableUser = $wpdb->prefix . 'users';
   $tableShareLink = $wpdb->prefix . 'woo_history_share_link';
   $tableUserCommission = $wpdb->prefix . 'woo_history_user_commission';
+  $tablePost = $wpdb->prefix . 'posts';
   $status = [
     'PURCHASE' => 1,
     'USE_POINT' => 2,
