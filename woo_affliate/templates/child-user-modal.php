@@ -68,12 +68,13 @@ foreach ($usersDisplay as $keyUserModal => $user) {
                 $childCommissions = $child['commission'];
                 $childRevenue = $child['total_order'];
                 $childProductId = $child['product_id'];
+                $childProductName = $child['post_title'];
               ?>
                 <tr>
                   <td><?php echo $child['user_nicename'] . ' - ' . $child['user_login']; ?></td>
                   <td><?php echo $childCommissions; ?></td>
                   <td><?php echo $childRevenue; ?></td>
-                  <td><a href="/wp-admin/post.php?post=<?php echo $childProductId; ?>&action=edit"><?php echo $childProductId; ?></a></td>
+                  <td><a href="/wp-admin/post.php?post=<?php echo $childProductId; ?>&action=edit"><?php echo $childProductName; ?></a></td>
                 </tr>
             <?php }
             } ?>
